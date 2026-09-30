@@ -260,13 +260,14 @@
 
   /* toast */
   .toast{
-    position:fixed;left:50%;bottom:32px;transform:translate(-50%,20px);
+    position:fixed;left:50%;bottom:calc(112px + env(safe-area-inset-bottom, 0px));transform:translate(-50%,20px);
+    max-width:calc(100vw - 40px);box-sizing:border-box;word-break:keep-all;text-align:center;
     background:var(--ink);color:var(--paper);
     padding:14px 22px;border-radius:4px;font-size:14px;font-weight:600;
     display:flex;align-items:center;gap:10px;
     box-shadow:0 8px 24px rgba(0,0,0,.18);
     opacity:0;pointer-events:none;transition:opacity .2s, transform .2s;
-    z-index:80;
+    z-index:200;
   }
   .toast.show{opacity:1;transform:translate(-50%,0);}
   .toast .dot{width:7px;height:7px;border-radius:50%;background:var(--stamp);}
@@ -560,7 +561,7 @@
 
 <footer>
   <div class="wrap foot-row">
-    <span>성수 팝업스토어 · 성수 유니온 랩 · 한국노총 조직확대사업단</span>
+    <span>성수 팝업스토어 · 성수 유니온 랩</span>
     <span><a href="https://seongsu-compass.vercel.app" target="_blank" rel="noopener">성수동 컴파스에서 내 임금 비교하기</a> · 계산 결과는 참고용 추정치입니다</span>
   </div>
 </footer>
@@ -835,12 +836,12 @@ function runCalc(){
     for(const f of p.interactive.fields){
       const el = document.getElementById('in-'+f.id);
       const val = parseFloat(el.value);
-      if(isNaN(val) || val < 0){ alert('숫자를 입력해주세요.'); return; }
+      if(isNaN(val) || val < 0){ showToast('숫자를 입력해주세요'); return; }
       values[f.id] = val;
     }
   } else {
     for(const f of p.interactive.fields){
-      if(!quizAnswers[f.id]){ alert('모든 문항에 답해주세요.'); return; }
+      if(!quizAnswers[f.id]){ showToast('모든 문항에 답해주세요'); return; }
       values[f.id] = quizAnswers[f.id];
     }
   }
@@ -927,7 +928,7 @@ function openKakao(){
 }
 async function orderViaKakao(){
   if(cart.length === 0){
-    alert('먼저 메뉴판에서 항목을 담아주세요.');
+    showToast('먼저 메뉴판에서 항목을 담아주세요');
     return;
   }
   const copied = await copyText(cartSummaryText());
