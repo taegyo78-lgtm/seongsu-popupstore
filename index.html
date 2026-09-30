@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>성수 팝업스토어 — 성수 유니온 랩</title>
+<meta name="description" content="일하며 놓친 임금과 권리를 확인해보세요 — 장바구니에 담아뒀다가 한꺼번에 무료상담, 성수 팝업스토어.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="당신이 못 받은 돈, 얼마인지 아세요?">
+<meta property="og:description" content="일하며 놓친 임금과 권리를 확인해보세요 — 성수 팝업스토어 · 성수 유니온 랩">
+<meta property="og:image" content="https://seongsu-compass.vercel.app/seongsu-popupstore-thumbnail-v2.png">
+<!-- 별도 배포 주소. Vercel 프로젝트 이름이 다르면 이 줄을 실제 주소로 바꿔주세요. 썸네일 이미지는 컴파스 쪽에 올라간 파일을 그대로 씁니다. -->
+<meta property="og:url" content="https://seongsu-popupstore.vercel.app/">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6RK4FNKLHW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-6RK4FNKLHW', { anonymize_ip: true, allow_google_signals: false });
+  // QR·링크 유입 경로: 주소 뒤에 ?src=board 처럼 붙이면 GA4에 따로 집계됩니다
+  window.POPUP_SRC = ((new URLSearchParams(location.search).get('src')) || 'direct').replace(/[^\w-]/g,'').slice(0,40) || 'direct';
+  function trackEvent(name, params){ try { gtag('event', name, Object.assign({ app:'popupstore', source: window.POPUP_SRC }, params || {})); } catch(e){} }
+  trackEvent('popup_visit');
+</script>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="당신이 못 받은 돈, 얼마인지 아세요?">
+<meta name="twitter:image" content="https://seongsu-compass.vercel.app/seongsu-popupstore-thumbnail-v2.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  :root{
+    --paper:#EEF0EA;
+    --paper-deep:#E3E6DD;
+    --ink:#1D2B2A;
+    --ink-soft:#4B5A57;
+    --line:#C7CFC3;
+    --stamp:#B23A2E;
+    --stamp-soft:#F4E1DE;
+    --amber:#C4820F;
+    --amber-soft:#F2E3C7;
+    --confirm:#2F6B4F;
+    --confirm-soft:#DCEAE1;
+    --white:#FBFBF8;
+    --radius:2px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Pretendard Variable','Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;
+    line-height:1.6;
+  }
+  h1,h2,h3,.serif{
+    font-family:'Noto Serif KR',serif;
+    color:var(--ink);
+    margin:0;
+  }
+  a{color:inherit;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px;}
+  ::selection{background:var(--amber-soft);}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:40;
+    background:rgba(238,240,234,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-row{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 0;
+  }
+  .brand{display:flex;align-items:baseline;gap:10px;}
+  .brand .mark{
+    font-family:'Noto Serif KR',serif;font-weight:900;font-size:20px;letter-spacing:-0.01em;
+  }
+  .brand .sub{font-size:12px;color:var(--ink-soft);border-left:1px solid var(--line);padding-left:10px;}
+  nav.links{display:flex;gap:28px;font-size:14px;color:var(--ink-soft);}
+  nav.links a{text-decoration:none;padding-bottom:2px;border-bottom:1px solid transparent;transition:border-color .15s;}
+  nav.links a:hover{border-color:var(--ink-soft);}
+  .cart-btn{
+    display:flex;align-items:center;gap:8px;
+    background:var(--ink);color:var(--paper);
+    border:none;padding:9px 16px;font-size:14px;cursor:pointer;
+    font-family:'Pretendard';font-weight:600;
+    border-radius:var(--radius);
+  }
+  .cart-count{
+    background:var(--stamp);color:#fff;border-radius:50%;
+    width:18px;height:18px;font-size:11px;display:flex;align-items:center;justify-content:center;
+    font-weight:700;
+  }
+
+  /* ---------- hero ---------- */
+  .hero{padding:76px 0 64px;}
+  .hero-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:56px;align-items:center;}
+  .eyebrow-note{
+    display:inline-block;font-size:13px;color:var(--ink-soft);
+    border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:22px;
+  }
+  .hero h1{
+    font-size:44px;line-height:1.28;font-weight:700;letter-spacing:-0.015em;
+  }
+  .hero h1 em{font-style:normal;color:var(--stamp);}
+  .hero p.lede{
+    margin-top:20px;font-size:17px;color:var(--ink-soft);max-width:52ch;
+  }
+  .hero p.lede b{color:var(--stamp);font-weight:800;}
+  .hero-cta{margin-top:34px;display:flex;gap:14px;align-items:center;}
+  .btn-primary{
+    background:var(--ink);color:var(--paper);border:none;
+    padding:14px 26px;font-size:15px;font-weight:700;cursor:pointer;
+    border-radius:var(--radius);
+    font-family:'Pretendard';
+  }
+  .btn-ghost{
+    background:transparent;border:1px solid var(--ink);color:var(--ink);
+    padding:13px 22px;font-size:15px;font-weight:600;cursor:pointer;border-radius:var(--radius);
+  }
+  .hero-note{margin-top:14px;font-size:13px;color:var(--ink-soft);}
+
+  /* receipt visual */
+  .receipt{
+    background:var(--white);
+    border:1px solid var(--line);
+    padding:28px 26px 64px;
+    box-shadow:6px 6px 0 var(--paper-deep);
+    position:relative;
+  }
+  .receipt::before{
+    content:"";position:absolute;left:0;right:0;top:-6px;height:12px;
+    background:
+      linear-gradient(135deg, var(--paper) 25%, transparent 25%) 0 0/12px 12px,
+      linear-gradient(225deg, var(--paper) 25%, transparent 25%) 0 0/12px 12px;
+  }
+  .receipt-head{text-align:center;border-bottom:1px dashed var(--line);padding-bottom:14px;margin-bottom:14px;}
+  .receipt-head .t1{font-size:12px;letter-spacing:.08em;color:var(--ink-soft);}
+  .receipt-head .t2{font-family:'Noto Serif KR';font-weight:700;font-size:19px;margin-top:6px;}
+  .rline{display:flex;justify-content:space-between;font-size:14px;padding:7px 0;border-bottom:1px dotted var(--line);}
+  .rline .name{color:var(--ink-soft);}
+  .rline .amt{font-variant-numeric:tabular-nums;text-decoration:line-through;color:#9AA39A;}
+  .rline.total{border-bottom:none;border-top:1px solid var(--ink);margin-top:6px;padding-top:12px;font-weight:700;}
+  .rline.total .amt{text-decoration:none;color:var(--stamp);}
+  .stamp-mark{
+    position:absolute;right:18px;bottom:18px;
+    border:3px solid var(--stamp);color:var(--stamp);
+    font-weight:900;font-size:15px;padding:6px 10px;
+    transform:rotate(-9deg);border-radius:4px;
+    font-family:'Noto Serif KR';letter-spacing:.05em;
+    opacity:.85;
+  }
+
+  /* ---------- section shared ---------- */
+  section{padding:64px 0;}
+  .section-head{max-width:640px;margin-bottom:40px;}
+  .section-head .kicker{font-size:13px;color:var(--ink-soft);margin-bottom:10px;}
+  .section-head h2{font-size:28px;font-weight:700;letter-spacing:-0.01em;}
+  .section-head p{margin-top:12px;color:var(--ink-soft);font-size:15.5px;}
+  .section-head p b{color:var(--stamp);font-weight:800;}
+
+  /* ---------- product grid ---------- */
+  #shop{background:var(--paper-deep);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+
+  /* floor directory (category tabs) */
+  .floor-bar{
+    display:flex;gap:8px;flex-wrap:wrap;
+    margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid var(--line);
+  }
+  .floor-tab{
+    background:var(--white);border:1px solid var(--line);color:var(--ink-soft);
+    font-family:'Pretendard';font-size:13.5px;font-weight:600;
+    padding:9px 16px;border-radius:20px;cursor:pointer;transition:all .12s;
+  }
+  .floor-tab:hover{border-color:var(--ink);color:var(--ink);}
+  .floor-tab.active{background:var(--ink);border-color:var(--ink);color:var(--paper);}
+
+  /* trending strip */
+  .ticker-head{font-size:12.5px;color:var(--ink-soft);margin-bottom:10px;font-weight:600;}
+  .ticker{
+    display:flex;gap:0;overflow-x:auto;margin-bottom:36px;
+    border:1px solid var(--line);background:var(--white);
+    border-radius:2px;
+  }
+  .ticker::-webkit-scrollbar{height:0;}
+  .ticker-item{
+    flex:0 0 auto;display:flex;align-items:center;gap:10px;
+    padding:14px 20px;border-right:1px solid var(--line);cursor:pointer;
+    font-size:13.5px;white-space:nowrap;transition:background .12s;
+  }
+  .ticker-item:last-child{border-right:none;}
+  .ticker-item:hover{background:var(--paper);}
+  .ticker-item .rank{
+    font-family:'Noto Serif KR';font-weight:900;font-size:16px;color:var(--stamp);
+  }
+  .ticker-item .tname{font-weight:600;color:var(--ink);}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(300px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);transition:opacity .15s;}
+  .card{
+    background:var(--white);padding:26px 24px 22px;
+    display:flex;flex-direction:column;gap:14px;position:relative;
+    transition:transform .15s, box-shadow .15s;
+  }
+  .card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 24px rgba(29,43,42,.10);
+    z-index:1;
+  }
+  .card .rank-badge{
+    position:absolute;top:20px;left:20px;
+    width:22px;height:22px;border-radius:50%;
+    background:var(--ink);color:var(--paper);
+    font-family:'Noto Serif KR';font-weight:700;font-size:11.5px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .card .badge{
+    position:absolute;top:20px;right:44px;
+    font-size:11px;font-weight:700;padding:4px 8px;border-radius:2px;
+    background:var(--stamp-soft);color:var(--stamp);
+  }
+  .card .heart{
+    position:absolute;top:16px;right:14px;
+    width:26px;height:26px;border:none;background:none;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;color:#B7BFB6;
+    transition:color .12s, transform .12s;
+  }
+  .card .heart:hover{transform:scale(1.1);}
+  .card .heart.on{color:var(--stamp);}
+  .card .heart svg{width:19px;height:19px;fill:currentColor;stroke:currentColor;stroke-width:1.4;}
+  .card .icon{width:30px;height:30px;color:var(--ink);margin-top:6px;}
+  .card h3{font-size:17px;font-weight:700;margin-top:2px;}
+  .card p{font-size:13.6px;color:var(--ink-soft);margin:0;flex-grow:1;}
+
+  .price-tag{
+    display:flex;align-items:flex-end;justify-content:space-between;
+    border-top:1px dashed var(--line);padding-top:12px;margin-top:2px;
+  }
+  .price-tag .list-price{font-size:12px;color:#9AA39A;}
+  .price-tag .list-price s{text-decoration-color:#9AA39A;}
+  .price-tag .sale-price{
+    display:flex;align-items:center;gap:8px;
+  }
+  .price-tag .sale-price b{
+    font-family:'Noto Serif KR';font-size:20px;color:var(--stamp);font-weight:900;
+  }
+  .price-tag .discount-badge{
+    background:var(--stamp);color:#fff;font-size:11px;font-weight:800;
+    padding:2px 6px;border-radius:2px;
+  }
+  .card{cursor:pointer;}
+  .card-hint{
+    margin-top:4px;font-size:12.5px;color:var(--ink-soft);
+    display:flex;align-items:center;gap:6px;font-weight:600;
+  }
+  .card-hint .arrow{transition:transform .15s;}
+  .card:hover .card-hint .arrow{transform:translateX(3px);}
+  .card.in-cart .card-hint{color:var(--confirm);}
+
+  /* toast */
+  .toast{
+    position:fixed;left:50%;bottom:32px;transform:translate(-50%,20px);
+    background:var(--ink);color:var(--paper);
+    padding:14px 22px;border-radius:4px;font-size:14px;font-weight:600;
+    display:flex;align-items:center;gap:10px;
+    box-shadow:0 8px 24px rgba(0,0,0,.18);
+    opacity:0;pointer-events:none;transition:opacity .2s, transform .2s;
+    z-index:80;
+  }
+  .toast.show{opacity:1;transform:translate(-50%,0);}
+  .toast .dot{width:7px;height:7px;border-radius:50%;background:var(--stamp);}
+
+  /* ---------- item detail sheet (kiosk-style) ---------- */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(15,20,18,.5);
+    z-index:90;opacity:0;pointer-events:none;transition:opacity .2s;
+    display:flex;align-items:flex-end;justify-content:center;
+  }
+  .modal-overlay.open{opacity:1;pointer-events:auto;}
+  .modal-sheet{
+    background:var(--white);width:100%;max-width:460px;
+    border-radius:18px 18px 0 0;
+    max-height:90vh;overflow-y:auto;
+    padding:26px 24px 28px;
+    transform:translateY(100%);transition:transform .28s cubic-bezier(.2,.8,.3,1);
+    position:relative;
+  }
+  .modal-overlay.open .modal-sheet{transform:translateY(0);}
+  .modal-sheet::before{
+    content:"";position:sticky;top:0;display:block;
+    width:36px;height:4px;background:var(--line);border-radius:4px;
+    margin:0 auto 18px;
+  }
+  .modal-close{
+    position:absolute;top:18px;right:20px;background:none;border:none;
+    font-size:18px;color:var(--ink-soft);cursor:pointer;
+  }
+  .modal-icon{width:44px;height:44px;color:var(--ink);}
+  .modal-badge{
+    display:inline-block;font-size:11px;font-weight:700;padding:4px 8px;
+    border-radius:2px;background:var(--stamp-soft);color:var(--stamp);
+    margin-top:14px;
+  }
+  .modal-sheet h3{font-family:'Noto Serif KR';font-size:22px;font-weight:700;margin-top:10px;}
+  .modal-sheet .m-desc{font-size:14.5px;color:var(--ink-soft);margin-top:8px;line-height:1.6;}
+
+  .calc-fields, .quiz-fields{margin-top:22px;display:flex;flex-direction:column;gap:14px;}
+  .calc-fields .field label{display:block;font-size:12.5px;color:var(--ink-soft);margin-bottom:6px;}
+  .calc-fields .field input{
+    width:100%;border:1px solid var(--line);background:var(--paper);
+    padding:11px 12px;font-size:15px;border-radius:var(--radius);font-family:'Pretendard';
+  }
+  .qfield label{display:block;font-size:14px;color:var(--ink);margin-bottom:8px;font-weight:600;}
+  .yn-row{display:flex;gap:8px;}
+  .yn-btn{
+    flex:1;padding:10px;border:1px solid var(--line);background:var(--white);
+    border-radius:var(--radius);font-size:13.5px;font-weight:600;color:var(--ink-soft);cursor:pointer;
+    font-family:'Pretendard';transition:all .12s;
+  }
+  .yn-btn.active{background:var(--ink);border-color:var(--ink);color:var(--paper);}
+  .calc-btn{width:100%;margin-top:18px;border-color:var(--ink);}
+
+  .result-box{
+    margin-top:18px;background:var(--paper);border:1px solid var(--line);
+    padding:16px 18px;border-radius:var(--radius);
+  }
+  .result-text{font-size:15px;font-weight:600;line-height:1.5;}
+  .result-note{font-size:12px;color:var(--ink-soft);margin-top:8px;line-height:1.5;}
+
+  .modal-add-btn{
+    width:100%;margin-top:20px;background:var(--ink);color:var(--paper);border:none;
+    padding:14px;font-size:14.5px;font-weight:700;cursor:pointer;border-radius:var(--radius);
+  }
+  .modal-add-btn:hover{background:#000;}
+
+  /* ---------- how it works ---------- */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+  .step{border-top:2px solid var(--ink);padding-top:16px;}
+  .step .n{font-family:'Noto Serif KR';font-size:22px;font-weight:700;color:var(--stamp);}
+  .step h4{font-size:15px;font-weight:700;margin:10px 0 6px;}
+  .step p{font-size:13.6px;color:var(--ink-soft);margin:0;}
+
+  /* ---------- illustrative help ---------- */
+  #helped{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .helped-tag{
+    display:inline-block;font-size:12px;background:var(--amber-soft);color:var(--amber);
+    padding:4px 9px;border-radius:2px;font-weight:700;margin-bottom:16px;
+  }
+  .helped-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .helped-card{background:var(--paper);border:1px solid var(--line);padding:22px;}
+  .helped-card .who{font-size:13px;color:var(--ink-soft);margin-bottom:10px;}
+  .helped-card .quote{font-size:14.5px;line-height:1.65;}
+
+  /* ---------- cart drawer ---------- */
+  .overlay{
+    position:fixed;inset:0;background:rgba(20,25,20,.35);
+    opacity:0;pointer-events:none;transition:opacity .2s;z-index:60;
+  }
+  .overlay.open{opacity:1;pointer-events:auto;}
+  .drawer{
+    position:fixed;top:0;right:0;height:100%;width:400px;max-width:90vw;
+    background:var(--white);z-index:70;
+    transform:translateX(100%);transition:transform .25s ease;
+    display:flex;flex-direction:column;
+    box-shadow:-8px 0 24px rgba(0,0,0,.12);
+  }
+  .drawer.open{transform:translateX(0);}
+  .drawer-head{
+    padding:22px 24px;border-bottom:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .drawer-head h3{font-size:17px;}
+  .close-btn{background:none;border:none;font-size:20px;cursor:pointer;color:var(--ink-soft);line-height:1;}
+  .drawer-body{padding:18px 24px;overflow-y:auto;flex-grow:1;}
+  .drawer-empty{color:var(--ink-soft);font-size:14px;padding:30px 0;text-align:center;}
+  .drawer-item{
+    display:flex;justify-content:space-between;align-items:flex-start;
+    padding:14px 0;border-bottom:1px solid var(--line);gap:10px;
+  }
+  .drawer-item .ti{font-size:14.5px;font-weight:600;}
+  .drawer-item .td{font-size:12.5px;color:var(--ink-soft);margin-top:3px;}
+  .rm-btn{background:none;border:none;color:var(--ink-soft);font-size:13px;cursor:pointer;text-decoration:underline;flex-shrink:0;}
+  .drawer-foot{padding:20px 24px;border-top:1px solid var(--line);}
+  .drawer-foot .note{font-size:12.5px;color:var(--ink-soft);margin-bottom:14px;}
+  .drawer-foot .btn-primary{width:100%;text-align:center;}
+  .btn-text-link{
+    display:block;width:100%;text-align:center;background:none;border:none;
+    color:var(--ink-soft);font-size:12.5px;text-decoration:underline;cursor:pointer;
+    margin-top:12px;font-family:'Pretendard';
+  }
+
+  /* ---------- consult form ---------- */
+  #consult{background:var(--ink);color:var(--paper);}
+  #consult .section-head h2{color:var(--paper);}
+  #consult .section-head p{color:#B9C2BC;}
+  #consult .section-head .kicker{color:#8FA098;}
+  .form-shell{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
+  .form-panel{background:var(--paper);color:var(--ink);padding:30px;border-radius:var(--radius);}
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:13px;color:var(--ink-soft);margin-bottom:6px;}
+  .field input, .field select, .field textarea{
+    width:100%;border:1px solid var(--line);background:var(--white);
+    padding:11px 12px;font-size:14.5px;font-family:'Pretendard';border-radius:var(--radius);
+    color:var(--ink);
+  }
+  .field textarea{resize:vertical;min-height:70px;}
+  .consent-row{display:flex;gap:10px;align-items:flex-start;font-size:12.8px;color:var(--ink-soft);margin:16px 0 20px;}
+  .consent-row input{width:auto;margin-top:3px;}
+  .free-banner{
+    display:flex;align-items:center;gap:10px;font-size:13px;color:#B9C2BC;margin-top:20px;
+  }
+  .free-banner .dot{width:6px;height:6px;background:var(--amber);border-radius:50%;flex-shrink:0;}
+  .success-box{display:none;text-align:center;padding:30px 20px;}
+  .success-box.show{display:block;}
+  .success-box .stamp-mark{position:static;transform:rotate(-6deg);display:inline-block;margin-bottom:16px;}
+  .form-copy h2{color:var(--paper);font-size:24px;margin-bottom:14px;}
+  .form-copy p{color:#B9C2BC;font-size:14.5px;line-height:1.7;}
+  .form-copy ul{margin:18px 0 0;padding:0;list-style:none;}
+  .form-copy li{
+    display:flex;gap:10px;font-size:13.5px;color:#D6DED9;padding:8px 0;border-top:1px solid #2E3B39;
+  }
+
+  footer{padding:36px 0;border-top:1px solid var(--line);}
+  .foot-row{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--ink-soft);flex-wrap:wrap;gap:10px;}
+
+  @media (max-width:860px){
+    .hero-grid{grid-template-columns:1fr;}
+    .grid{grid-template-columns:1fr 1fr;}
+    .steps{grid-template-columns:1fr 1fr;}
+    .helped-grid{grid-template-columns:1fr;}
+    .form-shell{grid-template-columns:1fr;}
+    .hero h1{font-size:32px;}
+    nav.links{display:none;}
+  }
+  @media (max-width:520px){
+    .grid{grid-template-columns:1fr;}
+    .steps{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav-row">
+    <div class="brand">
+      <span class="mark">성수 팝업스토어</span>
+      <span class="sub">성수 유니온 랩</span>
+    </div>
+    <nav class="links">
+      <a href="#shop">확인하기</a>
+      <a href="#how">이용 방법</a>
+      <a href="#helped">이런 도움</a>
+      <a href="javascript:void(0)" onclick="goKakaoDirect()">문의하기</a>
+    </nav>
+    <button class="cart-btn" onclick="openCart()">
+      <span>장바구니</span>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow-note">원하는 것을 골라~! 골라~!</div>
+      <h1>일하며 놓친 임금과<br>권리를 <em>확인</em>해보세요.</h1>
+      <p class="lede">장바구니에 넣어뒀다가, 마음에 드는 것만 모아서<br>한꺼번에 <b>무료상담 GO GO!</b></p>
+      <div class="hero-cta">
+        <button class="btn-primary" onclick="scrollToShop()">지금 확인하기</button>
+        <button class="btn-ghost" onclick="goKakaoDirect()">익명 카톡방 입장</button>
+      </div>
+      <p class="hero-note">상담은 무료이며, 신청한다고 해서 아무것도 청구되지 않습니다.</p>
+    </div>
+    <div class="receipt">
+      <div class="receipt-head">
+        <div class="t1">노동 영수증 · WORK RECEIPT</div>
+        <div class="t2">받았어야 할 것들</div>
+      </div>
+      <div class="rline"><span class="name">초과근무수당</span><span class="amt">미지급</span></div>
+      <div class="rline"><span class="name">미사용 연차수당</span><span class="amt">미지급</span></div>
+      <div class="rline"><span class="name">퇴직금 정산</span><span class="amt">미확인</span></div>
+      <div class="rline"><span class="name">최저임금 차액</span><span class="amt">미확인</span></div>
+      <div class="rline total"><span class="name">확인이 필요한 항목</span><span class="amt">4건</span></div>
+      <div class="stamp-mark">확인 필요</div>
+    </div>
+  </div>
+</section>
+
+<section id="shop">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>메뉴판</h2>
+      <p>메뉴를 눌러 계산해보거나 자가진단을 해보세요. 마음에 드는 건 장바구니에 담아뒀다가, 한꺼번에 <b>무료상담 GO GO!</b></p>
+    </div>
+
+    <div class="ticker-head">MD 추천 상품</div>
+    <div class="ticker" id="ticker"></div>
+
+    <div class="floor-bar" id="floorBar"></div>
+
+    <div class="grid" id="productGrid"></div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">이용 방법</div>
+      <h2>네 단계면 충분합니다</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <h4>해당 항목 담기</h4>
+        <p>메뉴판에서 나에게 해당하는 항목을 눌러 계산해보고 담습니다. 정답이 아니어도 괜찮습니다.</p>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <h4>익명 카톡방 입장</h4>
+        <p>성수에서 일하는 사람들이 모인 익명 오픈채팅방에 들어갑니다. 이름·연락처 없이 구경만 해도 괜찮습니다.</p>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <h4>1:1 상담</h4>
+        <p>내 사정을 자세히 묻고 싶으면 방 공지의 1:1 상담 링크로 직접 말을 겁니다. 필요하면 노무사·법률 상담으로 연결해 드립니다.</p>
+      </div>
+      <div class="step">
+        <div class="n">4</div>
+        <h4>확인 및 회수</h4>
+        <p>실제로 못 받은 것이 확인되면, 되찾는 과정을 함께 진행합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="helped">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="helped-tag">예시로 보는 도움의 형태</span>
+      <h2 style="margin-top:8px;">이런 식으로 도와드립니다</h2>
+      <p>아래는 실제 후기가 아니라, 상담이 어떻게 진행되는지 보여드리기 위한 예시입니다.</p>
+    </div>
+    <div class="helped-grid">
+      <div class="helped-card">
+        <div class="who">예시 · 매장 근무, 20대</div>
+        <div class="quote">"연차수당을 계산해본 적이 없었는데, 상담을 통해 놓친 부분을 처음 확인했어요."</div>
+      </div>
+      <div class="helped-card">
+        <div class="who">예시 · 사무직, 30대</div>
+        <div class="quote">"야근이 당연하다고 생각했는데, 수당 계산 기준을 알고 나니 다르게 보이더라고요."</div>
+      </div>
+      <div class="helped-card">
+        <div class="who">예시 · 물류·배송, 20대</div>
+        <div class="quote">"퇴사 전에 확인했으면 좋았을 것들을, 상담에서 하나씩 짚어주셨어요."</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-row">
+    <span>성수 팝업스토어 · 성수 유니온 랩 · 한국노총 조직확대사업단</span>
+    <span><a href="https://seongsu-compass.vercel.app" target="_blank" rel="noopener">성수동 컴파스에서 내 임금 비교하기</a> · 계산 결과는 참고용 추정치입니다</span>
+  </div>
+</footer>
+
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <h3>내가 못 받은 것들</h3>
+    <button class="close-btn" onclick="closeCart()">✕</button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-foot">
+    <div class="note">익명 카톡방은 여러 사람이 함께 보는 곳이에요. 회사 이름이나 금액은 적지 말고 방 공지의 1:1 상담 링크로 물어보세요.</div>
+    <button class="btn-primary" onclick="orderViaKakao()">담은 항목 들고 카톡방 가기</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span class="dot"></span><span id="toastText">담았습니다</span></div>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalBg(event)">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-icon" id="modalIcon"></div>
+    <div id="modalBadgeArea"></div>
+    <h3 id="modalTitle"></h3>
+    <p class="m-desc" id="modalDesc"></p>
+    <div id="modalInteractive"></div>
+    <div id="modalResult"></div>
+    <button class="modal-add-btn" onclick="addFromModal()">장바구니에 담기</button>
+  </div>
+</div>
+
+<script>
+const ICONS = {
+  clock: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>',
+  sun: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7"/></svg>',
+  box: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8l9-4.5L21 8v8l-9 4.5L3 16z"/><path d="M3 8l9 4.5L21 8M12 12.5V21"/></svg>',
+  scale: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v18M6 8l-3 6a4 4 0 0 0 6 0zM18 8l-3 6a4 4 0 0 0 6 0zM12 3l6 3M12 3l-6 3M8 21h8"/></svg>',
+  shield: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg>',
+  doc: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M9.5 12h5M9.5 15.5h5"/></svg>'
+};
+
+const MIN_WAGE_2026 = 10320; // 2026년 최저시급(원). 고용노동부 고시 기준.
+function fmt(n){ return Math.round(n).toLocaleString('ko-KR'); }
+
+const PRODUCTS = [
+  {id:'ot', icon:'clock', badge:'소멸시효 3년 임박', title:'초과근무수당', category:'임금',
+    desc:'연장·야간·휴일 근무를 했는데 정해진 만큼 수당을 받지 못한 경우',
+    longDesc:'연장·야간·휴일 근무를 하면 통상임금의 50% 이상을 가산해서 받아야 합니다(5인 이상 사업장 기준). 시급과 주당 초과근무시간을 입력하면 대략적인 미지급액을 계산해 볼 수 있어요.',
+    interactive:{ type:'calc',
+      fields:[{id:'wage', label:'시급 (원)', placeholder:'예: 10320'}, {id:'hours', label:'주당 초과근무시간 (시간)', placeholder:'예: 5'}],
+      compute:(v)=>{
+        const monthly = v.wage*1.5*v.hours*4.345;
+        return { text:`한 달 기준 약 <b>${fmt(monthly)}원</b>의 초과근무수당이 발생했을 수 있어요.`,
+                 note:'통상임금의 50% 가산 기준(상시근로자 5인 이상 사업장). 실제 금액은 상담에서 정확히 확인해 드립니다.' };
+      }
+    }
+  },
+  {id:'minwage', icon:'scale', badge:'단순 계산 가능', title:'최저임금 위반 여부', category:'임금',
+    desc:'시급으로 환산했을 때 최저임금보다 적게 받고 있는 것 같은 경우',
+    longDesc:'월급과 주당 노동시간을 입력하면 주휴시간까지 포함해 시급으로 환산하고 2026년 법정 최저시급(10,320원)과 비교해 드려요.',
+    interactive:{ type:'calc',
+      fields:[{id:'monthly', label:'월급 (원)', placeholder:'예: 2000000'}, {id:'weeklyHours', label:'주당 노동시간 (시간)', placeholder:'예: 40'}],
+      compute:(v)=>{
+        // 주 15시간 이상이면 주휴시간(주 40시간 기준 8시간, 비례)을 포함해 월 기준시간을 잡습니다. 주 40시간이면 209시간.
+        const paidWeekly = v.weeklyHours + (v.weeklyHours >= 15 ? Math.min(v.weeklyHours / 5, 8) : 0);
+        const hourly = v.monthly/(paidWeekly*4.345);
+        const diff = MIN_WAGE_2026-hourly;
+        if(diff>0){
+          return { text:`환산 시급이 약 <b>${fmt(hourly)}원</b>으로, 법정 최저시급(10,320원)보다 낮을 수 있어요.`,
+                   note:'주휴시간을 포함해 환산했어요(주 40시간이면 월 209시간). 식대 등 최저임금에 들어가지 않는 수당이 섞여 있으면 결과가 달라질 수 있습니다.' };
+        }
+        return { text:`환산 시급이 약 <b>${fmt(hourly)}원</b>으로, 법정 최저시급(10,320원) 이상으로 보여요.`,
+                 note:'수당 구성 항목에 따라 실제 위반 여부가 달라질 수 있으니 애매하면 상담을 권해요.' };
+      }
+    }
+  },
+  {id:'leave', icon:'sun', badge:null, title:'미사용 연차수당', category:'휴가·퇴직',
+    desc:'퇴사하거나 연차를 다 못 쓰고 넘어갔는데 수당으로 정산받지 못한 경우',
+    longDesc:'못 쓰고 소멸된 연차 일수와 1일 통상임금(보통 시급×8시간)을 입력하면 대략적인 미지급액을 계산해 볼 수 있어요.',
+    interactive:{ type:'calc',
+      fields:[{id:'days', label:'못 쓰고 소멸된 연차 일수', placeholder:'예: 5'}, {id:'daily', label:'1일 통상임금 (원, 시급×8)', placeholder:'예: 82560'}],
+      compute:(v)=>{
+        const amount = v.days*v.daily;
+        return { text:`약 <b>${fmt(amount)}원</b>의 연차수당을 못 받으셨을 수 있어요.`,
+                 note:'정확한 연차 발생일수는 입사일 기준으로 다시 계산이 필요합니다. 상담에서 확인해 드려요.' };
+      }
+    }
+  },
+  {id:'severance', icon:'box', badge:null, title:'퇴직금 정산', category:'휴가·퇴직',
+    desc:'퇴직금을 받긴 했지만 계산이 맞는지 확인해본 적 없는 경우',
+    longDesc:'근속연수와 최근 3개월 평균 월급을 입력하면 아주 대략적인 근사치를 볼 수 있어요. 실제 퇴직금은 평균임금과 재직일수를 기준으로 다르게 계산됩니다.',
+    interactive:{ type:'calc',
+      fields:[{id:'years', label:'근속연수 (년)', placeholder:'예: 3'}, {id:'avgMonthly', label:'최근 3개월 평균 월급 (원)', placeholder:'예: 2500000'}],
+      compute:(v)=>{
+        const amount = v.years*v.avgMonthly;
+        return { text:`대략 <b>${fmt(amount)}원</b> 수준일 수 있어요. (근속연수 × 월급 기준 근사치)`,
+                 note:'1년 이상 · 주 15시간 이상 일했다면 받을 수 있어요. 실제 퇴직금은 최근 3개월 평균임금 × 30일 × (재직일수/365)로 계산되니 근사치일 뿐입니다. 꼭 상담에서 확인하세요.' };
+      }
+    }
+  },
+  {id:'dismissal', icon:'shield', badge:null, title:'부당해고·부당징계', category:'고용·안전',
+    desc:'납득할 만한 이유 없이 갑자기 그만두게 되었거나 징계를 받은 경우',
+    longDesc:'해고 절차가 제대로 지켜졌는지 간단히 확인해 볼게요. 노동위원회 구제신청은 해고일로부터 3개월 이내에 해야 합니다.',
+    interactive:{ type:'quiz',
+      fields:[{id:'q1', label:'해고 사유와 시기를 서면으로 통보받으셨나요?'}, {id:'q2', label:'해고 30일 전 예고를 받으셨나요? (즉시 해고라면 예고수당을 받으셨나요?)'}],
+      compute:(v)=>{
+        if(v.q1==='no' || v.q2==='no'){
+          return { text:'서면 통보나 해고예고 절차에 문제가 있었을 가능성이 있어요.',
+                   note:'노동위원회 구제신청은 해고일로부터 3개월 이내에 해야 합니다(상시 5인 이상 사업장). 상담을 서두르시는 걸 권해요.' };
+        }
+        return { text:'기본 절차 요건은 충족된 것으로 보여요.',
+                 note:'다만 해고 사유의 정당성 등 세부 사정은 상담에서 함께 확인이 필요합니다.' };
+      }
+    }
+  },
+  {id:'insurance', icon:'doc', badge:'확인 쉬움', title:'4대보험 미가입', category:'보험',
+    desc:'국민연금·건강보험·고용보험·산재보험에 가입되어 있는지 모르는 경우',
+    longDesc:'근로계약서와 급여명세서 두 가지만 확인해도 미가입 가능성을 대략 짐작할 수 있어요.',
+    interactive:{ type:'quiz',
+      fields:[{id:'q1', label:'근로계약서를 작성하셨나요?'}, {id:'q2', label:'급여명세서에 4대보험료 공제 내역이 있나요?'}],
+      compute:(v)=>{
+        if(v.q1==='no' || v.q2==='no'){
+          return { text:'4대보험 미가입 상태일 수 있어요.',
+                   note:'미가입 기간에 대한 소급 가입과 사업주 부담분 청구가 가능할 수 있습니다.' };
+        }
+        return { text:'가입되어 있는 것으로 보여요.',
+                 note:'요율이 정확한지는 상담에서 함께 확인해 드릴 수 있어요.' };
+      }
+    }
+  },
+];
+
+const FLOORS = ['전체', '임금', '휴가·퇴직', '고용·안전', '보험'];
+// 익명 그룹 오픈채팅방 링크 (1:1 상담방 링크는 그룹방 공지에 고정)
+// 카톡방 주소는 lounge/index.html 한 곳에서만 관리합니다. 방이 바뀌면 그 파일만 고치면 됩니다.
+const KAKAO_OPENCHAT_URL = '/lounge?src=popupstore';
+
+let cart = [];
+let cartEstimates = {};
+let wishlist = [];
+let activeFloor = '전체';
+let currentProductId = null;
+let quizAnswers = {};
+let lastResult = null;
+
+function renderTicker(){
+  const el = document.getElementById('ticker');
+  el.innerHTML = PRODUCTS.map((p, i) => `
+    <div class="ticker-item" onclick="focusCard('${p.id}')">
+      <span class="rank">${i+1}</span>
+      <span class="tname">${p.title}</span>
+    </div>
+  `).join('');
+}
+
+function renderFloorBar(){
+  const el = document.getElementById('floorBar');
+  el.innerHTML = FLOORS.map(f => `
+    <button class="floor-tab ${f===activeFloor?'active':''}" onclick="setFloor('${f}')">${f}</button>
+  `).join('');
+}
+
+function setFloor(f){
+  activeFloor = f;
+  renderFloorBar();
+  renderProducts();
+}
+
+function focusCard(id){
+  const p = PRODUCTS.find(x=>x.id===id);
+  if(activeFloor !== '전체' && p.category !== activeFloor){
+    setFloor('전체');
+  }
+  scrollToShop();
+  setTimeout(() => {
+    const card = document.getElementById('card-'+id);
+    if(card){
+      card.style.boxShadow = '0 0 0 2px var(--stamp)';
+      setTimeout(() => card.style.boxShadow = '', 900);
+    }
+  }, 250);
+}
+
+function renderProducts(){
+  const grid = document.getElementById('productGrid');
+  const list = activeFloor === '전체' ? PRODUCTS : PRODUCTS.filter(p => p.category === activeFloor);
+  grid.innerHTML = list.map(p => {
+    const rank = PRODUCTS.indexOf(p) + 1;
+    const added = cart.includes(p.id);
+    const liked = wishlist.includes(p.id);
+    return `
+    <div class="card ${added?'in-cart':''}" id="card-${p.id}" onclick="openDetail('${p.id}')">
+      <div class="rank-badge">${rank}</div>
+      ${p.badge ? `<div class="badge">${p.badge}</div>` : ''}
+      <button class="heart ${liked?'on':''}" id="heart-${p.id}" onclick="event.stopPropagation();toggleWish('${p.id}')" title="관심 표시">
+        <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.7-10-9.3C.5 8.4 2.3 5 5.8 5c2 0 3.4 1 4.2 2.4C10.8 6 12.2 5 14.2 5c3.5 0 5.3 3.4 3.8 6.7C19.5 16.3 12 21 12 21z"/></svg>
+      </button>
+      ${ICONS[p.icon]}
+      <h3>${p.title}</h3>
+      <p>${p.desc}</p>
+      <div class="price-tag">
+        <div class="list-price">정가 <s>받았어야 할 임금</s></div>
+        <div class="sale-price"><b>0원</b><span class="discount-badge">-100%</span></div>
+      </div>
+      <div class="card-hint">${added ? '담았습니다 · 다시 눌러 확인' : '눌러서 계산해보기'} <span class="arrow">→</span></div>
+    </div>
+  `;}).join('');
+}
+
+function toggleWish(id){
+  const idx = wishlist.indexOf(id);
+  const btn = document.getElementById('heart-'+id);
+  if(idx === -1){ wishlist.push(id); btn.classList.add('on'); }
+  else{ wishlist.splice(idx,1); btn.classList.remove('on'); }
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  document.getElementById('toastText').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+/* ---------- item detail sheet ---------- */
+function openDetail(id){
+  trackEvent('popup_open_item', { item_id: id });
+  currentProductId = id;
+  quizAnswers = {};
+  lastResult = null;
+  const p = PRODUCTS.find(x=>x.id===id);
+  document.getElementById('modalIcon').innerHTML = ICONS[p.icon];
+  document.getElementById('modalBadgeArea').innerHTML = p.badge ? `<div class="modal-badge">${p.badge}</div>` : '';
+  document.getElementById('modalTitle').textContent = p.title;
+  document.getElementById('modalDesc').textContent = p.longDesc || p.desc;
+  document.getElementById('modalResult').innerHTML = '';
+  renderInteractive(p);
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function renderInteractive(p){
+  const wrap = document.getElementById('modalInteractive');
+  if(p.interactive.type === 'calc'){
+    wrap.innerHTML = `<div class="calc-fields">` + p.interactive.fields.map(f => `
+      <div class="field"><label>${f.label}</label><input type="number" id="in-${f.id}" placeholder="${f.placeholder||''}"></div>
+    `).join('') + `</div><button class="btn-ghost calc-btn" onclick="runCalc()">계산해보기</button>`;
+  } else {
+    wrap.innerHTML = `<div class="quiz-fields">` + p.interactive.fields.map(f => `
+      <div class="qfield">
+        <label>${f.label}</label>
+        <div class="yn-row">
+          <button class="yn-btn" onclick="setYN('${f.id}','yes',this)">예</button>
+          <button class="yn-btn" onclick="setYN('${f.id}','no',this)">아니오</button>
+        </div>
+      </div>
+    `).join('') + `</div><button class="btn-ghost calc-btn" onclick="runCalc()">확인해보기</button>`;
+  }
+}
+
+function setYN(qid, val, btn){
+  quizAnswers[qid] = val;
+  const row = btn.parentElement;
+  row.querySelectorAll('.yn-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function runCalc(){
+  const p = PRODUCTS.find(x=>x.id===currentProductId);
+  let values = {};
+  if(p.interactive.type === 'calc'){
+    for(const f of p.interactive.fields){
+      const el = document.getElementById('in-'+f.id);
+      const val = parseFloat(el.value);
+      if(isNaN(val) || val < 0){ alert('숫자를 입력해주세요.'); return; }
+      values[f.id] = val;
+    }
+  } else {
+    for(const f of p.interactive.fields){
+      if(!quizAnswers[f.id]){ alert('모든 문항에 답해주세요.'); return; }
+      values[f.id] = quizAnswers[f.id];
+    }
+  }
+  const result = p.interactive.compute(values);
+  trackEvent('popup_run_calc', { item_id: p.id });
+  lastResult = result;
+  document.getElementById('modalResult').innerHTML = `
+    <div class="result-box">
+      <div class="result-text">${result.text}</div>
+      <div class="result-note">${result.note}</div>
+    </div>`;
+}
+
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+function closeModalBg(e){
+  if(e.target.id === 'modalOverlay') closeModal();
+}
+
+function addFromModal(){
+  const id = currentProductId;
+  if(!cart.includes(id)) cart.push(id);
+  trackEvent('popup_add_item', { item_id: id });
+  if(lastResult) cartEstimates[id] = lastResult.text.replace(/<[^>]+>/g, '');
+  updateCartUI();
+  renderProducts();
+  showToast(`${PRODUCTS.find(x=>x.id===id).title} — 담았습니다`);
+  closeModal();
+}
+
+function toggleItem(id){
+  const idx = cart.indexOf(id);
+  if(idx === -1){ cart.push(id); }
+  else{ cart.splice(idx,1); delete cartEstimates[id]; }
+  updateCartUI();
+  renderProducts();
+}
+
+function updateCartUI(){
+  document.getElementById('cartCount').textContent = cart.length;
+  const body = document.getElementById('drawerBody');
+  if(cart.length === 0){
+    body.innerHTML = '<div class="drawer-empty">아직 담아두신 항목이 없습니다.<br>메뉴판에서 해당하는 항목을 눌러보세요.</div>';
+  } else {
+    body.innerHTML = cart.map(id => {
+      const p = PRODUCTS.find(x=>x.id===id);
+      const sub = cartEstimates[id] || p.desc;
+      return `<div class="drawer-item">
+        <div><div class="ti">${p.title}</div><div class="td">${sub}</div></div>
+        <button class="rm-btn" onclick="toggleItem('${id}')">빼기</button>
+      </div>`;
+    }).join('');
+  }
+}
+
+function openCart(){
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+}
+function closeCart(){
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+function cartSummaryText(){
+  // 그룹방에 붙여넣는 글이라 계산 금액은 넣지 않고 항목 이름만 담습니다
+  const names = cart.map(id => PRODUCTS.find(x=>x.id===id).title);
+  return '팝업스토어에서 왔어요. 궁금한 항목: ' + names.join(', ');
+}
+async function copyText(text){
+  try { await navigator.clipboard.writeText(text); return true; }
+  catch(e){
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly',''); ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      const ok = document.execCommand('copy'); ta.remove(); return ok;
+    } catch(e2){ return false; }
+  }
+}
+function openKakao(){
+  const w = window.open(KAKAO_OPENCHAT_URL, '_blank');
+  if(!w) location.href = KAKAO_OPENCHAT_URL; // 팝업 차단 시 같은 창에서 열기
+}
+async function orderViaKakao(){
+  if(cart.length === 0){
+    alert('먼저 메뉴판에서 항목을 담아주세요.');
+    return;
+  }
+  const copied = await copyText(cartSummaryText());
+  trackEvent('popup_kakao_order', { items: cart.length, copied: copied ? 'yes' : 'no' });
+  showToast(copied ? '궁금한 항목 이름만 복사했어요. 금액과 회사 이름은 1:1로!' : '채팅방에서 궁금한 항목을 알려주세요');
+  setTimeout(openKakao, 700);
+}
+function goKakaoDirect(){
+  trackEvent('popup_kakao_direct');
+  openKakao();
+}
+function scrollToShop(){ document.getElementById('shop').scrollIntoView({behavior:'smooth'}); }
+
+renderTicker();
+renderFloorBar();
+renderProducts();
+updateCartUI();
+</script>
+
+</body>
+</html>

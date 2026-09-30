@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>성수 퇴근길 라운지로 이동 중</title>
+<meta name="robots" content="noindex">
+<meta property="og:title" content="성수 퇴근길 라운지">
+<meta property="og:description" content="성수에서 일하는 사람들의 익명 카톡방. 이름·연락처 없이 입장해요.">
+<script>
+  // ▼ 카톡방이 바뀌면 이 한 줄만 고치세요. 인쇄된 QR은 그대로 살아 있습니다.
+  var LOUNGE_URL = 'https://open.kakao.com/o/gGgqYYPi';
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6RK4FNKLHW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-6RK4FNKLHW', { anonymize_ip: true, allow_google_signals: false });
+  var SRC = ((new URLSearchParams(location.search).get('src')) || 'direct').replace(/[^\w-]/g,'').slice(0,40) || 'direct';
+  var gone = false;
+  function go(){ if (gone) return; gone = true; location.replace(LOUNGE_URL); }
+  try {
+    gtag('event', 'lounge_redirect', { app: 'popupstore', source: SRC, event_callback: go, event_timeout: 800 });
+  } catch (e) {}
+  setTimeout(go, 900);
+</script>
+<noscript><meta http-equiv="refresh" content="0; url=https://open.kakao.com/o/gGgqYYPi"></noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  html,body{margin:0;height:100%;background:#F7F4EC;color:#161616;font-family:'Pretendard Variable','Pretendard',-apple-system,sans-serif}
+  main{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;box-sizing:border-box;text-align:center}
+  h1{margin:0;font-size:26px;font-weight:800}
+  p{margin:0;font-size:16px;line-height:1.6;color:#444}
+  a.btn{margin-top:8px;display:inline-block;padding:14px 22px;background:#FEE500;color:#191919;border-radius:12px;font-weight:700;text-decoration:none;font-size:17px}
+  a.btn:focus-visible{outline:2px solid #161616;outline-offset:3px}
+  small{font-size:13px;color:#666}
+</style>
+</head>
+<body>
+<main>
+  <h1>성수 퇴근길 라운지로 가는 중</h1>
+  <p>성수에서 일하는 사람들의 익명 카톡방이에요.<br>이름·연락처 없이 입장할 수 있어요.</p>
+  <a class="btn" id="btn" href="https://open.kakao.com/o/gGgqYYPi">바로 입장하기</a>
+  <small>한국노총 성수유니온랩</small>
+</main>
+<script>document.getElementById('btn').href = LOUNGE_URL;</script>
+</body>
+</html>
