@@ -629,6 +629,35 @@ const PRODUCTS = [
       }
     }
   },
+  {id:'salaried', icon:'shield', badge:'연봉 계약자', title:'연봉제 야근수당 계산기', category:'임금',
+    desc:'포괄임금·재량근로·선택근로라서 야근해도 얼마를 받아야 하는지 모르는 경우',
+    longDesc:'연봉과 평균 야근 시간만 넣으면 내 시급과 받아야 할 연장근로수당을 계산해 드려요. 계약서에 "연장근로 OO시간 포함"처럼 미리 넣어 둔 시간이 있으면 함께 적어 주세요. 없거나 모르면 0을 넣으면 됩니다.',
+    interactive:{ type:'calc',
+      fields:[{id:'annual', label:'연봉 (원 · 세전 · 성과급 제외)', placeholder:'예: 42000000'},
+              {id:'weeklyOT', label:'주당 평균 연장근로시간 (시간)', placeholder:'예: 6'},
+              {id:'fixedOT', label:'계약서에 미리 포함된 월 연장근로시간 (없거나 모르면 0)', placeholder:'예: 0 또는 20'}],
+      compute:(v)=>{
+        const monthly = v.annual/12;
+        // 월 기준시간 209시간(주 40시간 + 주휴). 계약서에 고정 연장시간이 들어 있으면 그만큼 1.5배로 빼서 기본 시급을 역산합니다.
+        const hourly = monthly/(209 + v.fixedOT*1.5);
+        const monthlyOT = v.weeklyOT*4.345;
+        const otPay = hourly*1.5*monthlyOT;
+        let text = `내 시급은 약 <b>${fmt(hourly)}원</b>이에요. 한 달 연장근로 약 ${fmt(monthlyOT)}시간이면 연장근로수당은 <b>월 ${fmt(otPay)}원</b> · <b>연 ${fmt(otPay*12)}원</b> 수준이에요.`;
+        if(v.fixedOT>0){
+          const over = Math.max(0, monthlyOT - v.fixedOT);
+          text += over>0
+            ? `<br>계약서에 포함된 월 ${fmt(v.fixedOT)}시간을 넘긴 <b>${fmt(over)}시간</b>분, 약 <b>월 ${fmt(hourly*1.5*over)}원</b>을 따로 받아야 할 수 있어요.`
+            : `<br>계약서에 포함된 월 ${fmt(v.fixedOT)}시간 안이라 추가 수당은 없을 수 있어요. 다만 실제 야근이 이보다 많다면 차액을 받아야 해요.`;
+        }
+        const flags = [];
+        if(v.weeklyOT>12) flags.push('주 평균 연장근로가 법정 한도인 주 12시간을 넘어요. 법 위반일 수 있어요.');
+        if(hourly < MIN_WAGE_2026) flags.push('환산 시급이 2026년 최저시급(10,320원)보다 낮아요.');
+        if(flags.length) text += '<br><b style="color:var(--stamp)">⚠ ' + flags.join(' ') + '</b>';
+        return { text,
+                 note:'포괄임금이어도 실제 야근이 포함된 시간보다 많으면 차액을 받아야 하고, 재량근로제라도 밤 10시~아침 6시 야간근로와 휴일근로 가산은 따로 받아야 해요. 선택적 근로시간제는 정산기간 평균 주 40시간을 넘긴 시간이 연장근로예요. 5인 이상 사업장 기준이며, 수당 구성에 따라 실제 금액은 달라질 수 있으니 애매하면 상담에서 확인하세요.' };
+      }
+    }
+  },
   {id:'minwage', icon:'scale', badge:'단순 계산 가능', title:'최저임금 위반 여부', category:'임금',
     desc:'시급으로 환산했을 때 최저임금보다 적게 받고 있는 것 같은 경우',
     longDesc:'월급과 주당 노동시간을 입력하면 주휴시간까지 포함해 시급으로 환산하고 2026년 법정 최저시급(10,320원)과 비교해 드려요.',
@@ -672,21 +701,6 @@ const PRODUCTS = [
       }
     }
   },
-  {id:'dismissal', icon:'shield', badge:null, title:'부당해고·부당징계', category:'고용·안전',
-    desc:'납득할 만한 이유 없이 갑자기 그만두게 되었거나 징계를 받은 경우',
-    longDesc:'해고 절차가 제대로 지켜졌는지 간단히 확인해 볼게요. 노동위원회 구제신청은 해고일로부터 3개월 이내에 해야 합니다.',
-    interactive:{ type:'quiz',
-      fields:[{id:'q1', label:'해고 사유와 시기를 서면으로 통보받으셨나요?'}, {id:'q2', label:'해고 30일 전 예고를 받으셨나요? (즉시 해고라면 예고수당을 받으셨나요?)'}],
-      compute:(v)=>{
-        if(v.q1==='no' || v.q2==='no'){
-          return { text:'서면 통보나 해고예고 절차에 문제가 있었을 가능성이 있어요.',
-                   note:'노동위원회 구제신청은 해고일로부터 3개월 이내에 해야 합니다(상시 5인 이상 사업장). 상담을 서두르시는 걸 권해요.' };
-        }
-        return { text:'기본 절차 요건은 충족된 것으로 보여요.',
-                 note:'다만 해고 사유의 정당성 등 세부 사정은 상담에서 함께 확인이 필요합니다.' };
-      }
-    }
-  },
   {id:'insurance', icon:'doc', badge:'확인 쉬움', title:'4대보험 미가입', category:'보험',
     desc:'국민연금·건강보험·고용보험·산재보험에 가입되어 있는지 모르는 경우',
     longDesc:'근로계약서와 급여명세서 두 가지만 확인해도 미가입 가능성을 대략 짐작할 수 있어요.',
@@ -704,7 +718,7 @@ const PRODUCTS = [
   },
 ];
 
-const FLOORS = ['전체', '임금', '휴가·퇴직', '고용·안전', '보험'];
+const FLOORS = ['전체', '임금', '휴가·퇴직', '보험'];
 // 익명 오픈채팅방 「성수 퇴근길 라운지」 — 주소는 lounge/index.html 한 곳에서만 관리합니다
 // 1:1 상담은 방 안에서 담당자에게 채팅을 요청하는 방식
 const KAKAO_OPENCHAT_URL = '/lounge?src=popupstore';
