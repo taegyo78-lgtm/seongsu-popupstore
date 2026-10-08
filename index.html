@@ -280,6 +280,32 @@
   .cartbar .cartbar-go{font-weight:700;color:var(--amber, #F2C94C);}
   .toast .dot{width:7px;height:7px;border-radius:50%;background:var(--stamp);}
 
+
+  /* ---------- 나도 해 보기 : 서울 2030과 비교 ---------- */
+  #compare{display:none;background:var(--ink);color:var(--paper);}
+  #compare.on{display:block;}
+  .cmp-row{display:flex;gap:24px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding-top:34px;padding-bottom:34px;}
+  .cmp-row h3{margin:0 0 6px;font-size:22px;color:var(--paper);}
+  .cmp-row p{margin:0;font-size:14px;color:var(--paper);opacity:.85;}
+  .cmp-btn{background:var(--stamp);color:#fff;border:0;padding:14px 22px;font:inherit;font-weight:700;font-size:15px;cursor:pointer;}
+  .cmp-ov{position:fixed;inset:0;background:rgba(15,20,18,.55);display:none;align-items:flex-end;justify-content:center;z-index:300;}
+  .cmp-ov.open{display:flex;}
+  .cmp-sheet{background:var(--paper);color:var(--ink);width:min(560px,100%);max-height:92vh;overflow:auto;padding:26px 24px calc(26px + env(safe-area-inset-bottom,0px));border-radius:18px 18px 0 0;}
+  .cmp-top{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--ink-soft);margin-bottom:14px;}
+  .cmp-close{background:none;border:0;font-size:22px;cursor:pointer;color:var(--ink);}
+  .cmp-q{font-size:19px;font-weight:700;line-height:1.45;margin:0 0 16px;}
+  .cmp-opt{display:block;width:100%;text-align:left;padding:14px 16px;margin-bottom:8px;border:1px solid var(--line);background:var(--white,#fff);font:inherit;font-size:15px;cursor:pointer;}
+  .cmp-opt:hover{border-color:var(--ink);}
+  .cmp-res{border-bottom:1px solid var(--line);padding:14px 0;}
+  .cmp-res .q{font-size:13px;color:var(--ink-soft);margin-bottom:4px;}
+  .cmp-res .me{font-weight:700;margin-bottom:8px;}
+  .cmp-bar{position:relative;height:8px;background:var(--paper-deep);margin:6px 0 4px;}
+  .cmp-bar i{position:absolute;left:0;top:0;bottom:0;background:var(--stamp);}
+  .cmp-res .pct{font-size:13px;color:var(--ink-soft);}
+  .cmp-sum{background:var(--white,#fff);border:1px solid var(--line);padding:16px;margin:16px 0;font-size:15px;line-height:1.6;}
+  .cmp-src{font-size:11.5px;color:var(--ink-soft);line-height:1.5;margin-top:12px;}
+  .cmp-actions{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
+
   /* ---------- item detail sheet (kiosk-style) ---------- */
   .modal-overlay{
     position:fixed;inset:0;background:rgba(15,20,18,.5);
@@ -496,6 +522,13 @@
   </div>
 </section>
 
+<section id="compare">
+  <div class="wrap cmp-row">
+    <div><h3>나는 서울 2030 청년들과 얼마나 같을까?</h3><p>다섯 문항 · 1분 · 익명. 내 답과 서울 2030 임금노동자 500명의 답을 나란히 보여드려요.</p></div>
+    <button class="cmp-btn" onclick="openCompare()">나도 해 보기 →</button>
+  </div>
+</section>
+
 <section id="shop">
   <div class="wrap">
     <div class="section-head">
@@ -570,7 +603,7 @@
 <footer>
   <div class="wrap foot-row">
     <span>성수 팝업스토어 · 성수 유니온 랩</span>
-    <span><a href="https://seongsu-compass.vercel.app" target="_blank" rel="noopener">성수동 컴파스에서 내 임금 비교하기</a> · 계산 결과는 참고용 추정치입니다</span>
+    <span>계산 결과는 참고용 추정치입니다</span>
   </div>
 </footer>
 
@@ -587,6 +620,7 @@
   </div>
 </div>
 
+<div class="cmp-ov" id="cmpOv" onclick="if(event.target.id==='cmpOv')closeCompare()"><div class="cmp-sheet" id="cmpSheet"></div></div>
 <div class="toast" id="toast" onclick="openCart()"><span class="dot"></span><span id="toastText">담았습니다</span></div>
 <button class="cartbar" id="cartbar" onclick="openCart()"><span>장바구니 <b id="cartbarCount">0</b>개 담김</span><span class="cartbar-go">장바구니 보기 →</span></button>
 
@@ -955,6 +989,73 @@ renderTicker();
 renderFloorBar();
 renderProducts();
 updateCartUI();
+
+// ---------- 나도 해 보기 : 서울 2030 청년노동 실태조사와 비교 ----------
+const COMPARE_OPEN_DATE = new Date('2026-10-13T12:00:00+09:00');
+const COMPARE_SRC = '출처: 한국노총·김주영 의원실 「서울시 2030 임금근로자 실태조사」(엠브레인퍼블릭, 2026.9.28~10.4, 서울 근무 만 20~39세 임금근로자 500명, 온라인 조사). 응답자 인식을 물은 결과로 법 위반 여부를 뜻하지 않습니다.';
+const CMP_QS = [
+  {id:'incl', q:'야근·휴일근로 수당이 실제 일한 시간과 관계없이 월급에 미리 포함되어 있나요?',
+   base:'응답자 500명', opts:[['포함되어 있다',53.0],['포함되어 있지 않다',36.8],['잘 모르겠다',10.2]], risk:[0,2]},
+  {id:'paid', q:'최근 3개월 동안 야근·야간·휴일근로 수당을 일한 만큼 받으셨나요?',
+   base:'그런 근로를 한 352명', opts:[['일한 만큼 다 받았다',42.9],['일부만 받았다',21.6],['전혀 못 받았다',35.5],['그런 근로를 한 적 없다',null]], risk:[1,2]},
+  {id:'unrec', q:'실제 일했는데 회사 근태시스템에 기록되지 않은 시간이 한 주에 몇 시간쯤 되나요?',
+   base:'근태시스템이 있는 332명', opts:[['없다 (0시간)',44.0],['1~2시간',27.4],['3~4시간',8.7],['5시간 이상',19.9],['우리 회사엔 근태시스템이 없다',null]], risk:[1,2,3]},
+  {id:'burn', q:'일하면서 번아웃을 느낀 적 있나요?',
+   base:'응답자 500명', opts:[['자주 있다',26.0],['가끔 있다',56.6],['거의 없다',17.4]], risk:[0,1]},
+  {id:'stay', q:'3년 뒤에도 지금 회사에서 일하고 있을 것 같나요?',
+   base:'응답자 500명', opts:[['그렇다',24.6],['아니다, 이직을 준비하거나 고민 중',55.0],['모르겠다',20.4]], risk:[1]},
+];
+let cmpStep = 0, cmpAns = {};
+function compareEnabled(){
+  return true; // 10.8부터 바로 공개
+}
+function openCompare(){
+  cmpStep = 0; cmpAns = {};
+  trackEvent('cmp_start');
+  document.getElementById('cmpOv').classList.add('open');
+  renderCompare();
+}
+function closeCompare(){ document.getElementById('cmpOv').classList.remove('open'); }
+function pickCompare(i){
+  const q = CMP_QS[cmpStep];
+  cmpAns[q.id] = i;
+  trackEvent('cmp_answer', { q: q.id, a: i });
+  cmpStep++;
+  renderCompare();
+}
+function renderCompare(){
+  const el = document.getElementById('cmpSheet');
+  if(cmpStep < CMP_QS.length){
+    const q = CMP_QS[cmpStep];
+    el.innerHTML = `<div class="cmp-top"><span>${cmpStep+1} / ${CMP_QS.length}</span><button class="cmp-close" onclick="closeCompare()">×</button></div>
+      <p class="cmp-q">${q.q}</p>` + q.opts.map((o,i)=>`<button class="cmp-opt" onclick="pickCompare(${i})">${o[0]}</button>`).join('');
+    return;
+  }
+  let risk = 0;
+  const rows = CMP_QS.map(q=>{
+    const i = cmpAns[q.id], o = q.opts[i];
+    if(q.risk.includes(i)) risk++;
+    const pct = o[1];
+    const bar = pct===null ? '' : `<div class="cmp-bar"><i style="width:${pct}%"></i></div><div class="pct">서울 2030 ${q.base} 중 <b>${pct.toFixed(1)}%</b>가 나와 같은 답을 했어요.</div>`;
+    const none = pct===null ? `<div class="pct">이 답은 비교 대상이 아니에요.</div>` : '';
+    return `<div class="cmp-res"><div class="q">${q.q}</div><div class="me">나 · ${o[0]}</div>${bar}${none}</div>`;
+  }).join('');
+  const sum = risk >= 3
+    ? `<b>혼자만의 일이 아니에요.</b> 내 답 가운데 ${risk}개가 서울 청년들이 가장 많이 겪는 문제와 겹쳐요. 받아야 할 돈이 있는지 계산해 보고 익명 카톡방에서 이야기 나눠 보세요.`
+    : risk >= 1
+      ? `내 답 가운데 ${risk}개가 서울 청년들이 많이 겪는 문제와 겹쳐요. 야근수당이 맞게 들어오는지 한 번 계산해 보세요.`
+      : `다행히 큰 문제는 없어 보여요. 주변 동료에게도 한번 해 보라고 알려 주세요.`;
+  trackEvent('cmp_done', { risk });
+  el.innerHTML = `<div class="cmp-top"><span>나 vs 서울 2030 청년</span><button class="cmp-close" onclick="closeCompare()">×</button></div>
+    ${rows}<div class="cmp-sum">${sum}</div>
+    <div class="cmp-actions">
+      <button class="btn-primary" onclick="closeCompare();openDetail('salaried')">연봉제 야근수당 계산해 보기</button>
+      <button class="btn-ghost" onclick="closeCompare();openDetail('ot')">시급제 초과근무수당 계산해 보기</button>
+      <button class="btn-ghost" onclick="goKakaoDirect()">익명 카톡방에서 이야기하기</button>
+    </div>
+    <div class="cmp-src">${COMPARE_SRC}</div>`;
+}
+if(compareEnabled()) document.getElementById('compare').classList.add('on');
 </script>
 
 </body>
