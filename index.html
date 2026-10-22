@@ -97,6 +97,13 @@
     font-weight:700;
   }
 
+  .quick{margin-top:26px;display:grid;grid-template-columns:1fr;gap:10px;max-width:460px;}
+  .qk{display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left;background:var(--white);border:1px solid var(--ink);color:var(--ink);padding:16px 18px;border-radius:12px;font:inherit;cursor:pointer;}
+  .qk .qk-t{font-size:13px;color:var(--ink-soft);white-space:nowrap}
+  .qk .qk-b{font-size:16px;font-weight:800}
+  .qk-main{background:var(--stamp);border-color:var(--stamp);color:#fff;padding:20px 18px}
+  .qk-main .qk-t{color:rgba(255,255,255,.85)} .qk-main .qk-b{font-size:18px}
+  .hero-note a{color:var(--ink);font-weight:700;text-decoration:underline;text-underline-offset:3px}
   /* ---------- hero ---------- */
   .hero{padding:76px 0 64px;}
   .hero-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:56px;align-items:center;}
@@ -498,14 +505,15 @@
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
-      <div class="eyebrow-note">원하는 것을 골라~! 골라~!</div>
+      <div class="eyebrow-note">썰랩 · 성수 팝업스토어</div>
       <h1>일하며 놓친 임금과<br>권리를 <em>확인</em>해보세요.</h1>
-      <p class="lede">장바구니에 넣어뒀다가, 마음에 드는 것만 모아서<br>한꺼번에 <b>무료상담 GO GO!</b></p>
-      <div class="hero-cta">
-        <button class="btn-primary" onclick="scrollToShop()">지금 확인하기</button>
-        <button class="btn-ghost" onclick="goKakaoDirect()">카톡으로 바로 상담</button>
+      <p class="lede"><b>1분이면</b> 내가 받아야 할 야근수당이 나와요. 이름도 연락처도 필요 없어요.</p>
+      <div class="quick">
+        <button class="qk qk-main" onclick="quickStart('salaried')"><span class="qk-t">연봉 받는 분</span><span class="qk-b">내 야근수당 계산하기 →</span></button>
+        <button class="qk" onclick="quickStart('ot')"><span class="qk-t">시급 받는 분</span><span class="qk-b">초과근무수당 계산 →</span></button>
+        <button class="qk" onclick="quickStart('compare')"><span class="qk-t">5문항 · 1분</span><span class="qk-b">서울 2030과 나 비교 →</span></button>
       </div>
-      <p class="hero-note">상담은 무료이며, 신청한다고 해서 아무것도 청구되지 않습니다.</p>
+      <p class="hero-note">그냥 이야기하고 싶다면 → <a href="#" onclick="quickStart('lounge');return false;">익명 카톡방 「성수동119」</a> · 상담은 무료예요.</p>
     </div>
     <div class="receipt">
       <div class="receipt-head">
@@ -559,7 +567,7 @@
       </div>
       <div class="step">
         <div class="n">2</div>
-        <h4>익명 카톡방에서 계산하기</h4>
+        <h4>익명 카톡방 「성수동119」</h4>
         <p>담은 항목을 들고 성수에서 일하는 사람들의 익명 오픈채팅방으로 갑니다. 이름도 연락처도 필요 없습니다.</p>
       </div>
       <div class="step">
@@ -615,7 +623,7 @@
   </div>
   <div class="drawer-body" id="drawerBody"></div>
   <div class="drawer-foot">
-    <div class="note">익명 카톡방은 여러 사람이 함께 보는 곳이에요. 회사 이름이나 금액은 적지 말고, 따로 묻고 싶으면 방에서 담당자에게 1:1 채팅을 요청하세요.</div>
+    <div class="note">익명 카톡방 「성수동119」는 여러 사람이 함께 보는 곳이에요. 회사 이름이나 금액은 적지 말고, 따로 묻고 싶으면 방에서 담당자에게 1:1 채팅을 요청하세요.</div>
     <button class="btn-primary" onclick="orderViaKakao()">담은 항목 들고 계산하러 가기</button>
   </div>
 </div>
@@ -753,7 +761,7 @@ const PRODUCTS = [
 ];
 
 const FLOORS = ['전체', '임금', '휴가·퇴직', '보험'];
-// 익명 오픈채팅방 「성수 퇴근길 라운지」 — 주소는 lounge/index.html 한 곳에서만 관리합니다
+// 익명 오픈채팅방 「성수동119」(성수 퇴근길 라운지) — 주소는 lounge/index.html 한 곳에서만 관리합니다
 // 1:1 상담은 방 안에서 담당자에게 채팅을 요청하는 방식
 const KAKAO_OPENCHAT_URL = '/lounge?src=popupstore';
 
@@ -1056,6 +1064,14 @@ function renderCompare(){
     <div class="cmp-src">${COMPARE_SRC}</div>`;
 }
 if(compareEnabled()) document.getElementById('compare').classList.add('on');
+
+// ---------- 첫 화면 바로 시작 ----------
+function quickStart(type){
+  trackEvent('hero_quick', { type });
+  if(type==='compare') return openCompare();
+  if(type==='lounge') return goKakaoDirect();
+  openDetail(type);
+}
 </script>
 
 </body>
