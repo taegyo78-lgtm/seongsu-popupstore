@@ -591,6 +591,7 @@
 #dzsec .dz-wrap{max-width:980px;margin:0 auto;padding:18px 20px 40px}
 #dzsec{padding:0!important}
 #dzsec section{padding:0!important;margin:0!important;border:0!important;background:none!important}
+#dzsec .ask{text-align:right;font-weight:700;color:#B23A2E;font-size:14px;margin:2px 0 8px}
 #dzsec .more{text-align:center;margin-top:22px;font-size:14px}
 #dzsec .more a{color:var(--ink-soft);text-decoration:underline;text-underline-offset:3px}
 </style>
@@ -610,7 +611,7 @@
           <circle cx="150" cy="150" r="8" fill="var(--ink)"/>
         </svg>
         </div>
-      <div class="live"><div class="lt"><span id="tm">18:00</span> 퇴근 <small id="th">칼퇴</small><span class="nbadge">야근수당 2배!</span></div><div class="lm">이번 달 공짜노동 <b id="mini">₩0</b></div></div>
+      <div class="live"><div class="lt"><span id="tm">18:00</span> 퇴근 <small id="th">칼퇴</small><span class="nbadge">야근수당 2배!</span></div><div class="lm">한 달 받았어야 할 수당 <b id="mini">₩0</b></div></div>
       <div class="hint" id="hint">바늘을 잡고 돌려 보세요</div>
       <div class="row" role="group" aria-label="연봉">
         <span class="lab">내 연봉</span>
@@ -632,7 +633,7 @@
         <div class="slot"></div>
         <div class="paperclip">
           <div class="dz-receipt" id="rc">
-            <div class="r-head"><div class="a">RECEIPT</div><div class="b" id="date">나의 공짜노동 영수증</div></div>
+            <div class="r-head"><div class="a">RECEIPT</div><div class="b" id="date">나의 야근 영수증</div></div>
             <div class="ln"><span class="k">출근</span><span id="l-in">09:00</span></div>
             <div class="ln"><span class="k">퇴근</span><span id="l-out">18:00</span></div>
             <div class="ln"><span class="k">점심</span><span>1시간 제외</span></div>
@@ -642,8 +643,9 @@
             <div class="ln hide" id="r-mh"><span class="k">한 달 연장근로</span><span id="l-mh">-</span></div>
             <div class="ln hide red" id="r-limit"><span class="k">주 연장 (한도 12)</span><span id="l-limit">-</span></div>
             <div class="dash"></div>
-            <div class="dz-total"><span class="k">이번 달 공짜노동</span><span class="v" id="tot">₩0</span></div>
-            <div class="three"><span>3년이면 최대</span><span class="v" id="three">₩0</span></div>
+            <div class="dz-total"><span class="k">한 달 받았어야 할 연장·야간수당</span><span class="v" id="tot">₩0</span></div>
+            <div class="ask">이만큼, 받으셨나요?</div>
+            <div class="three"><span>3년이면 최대 (청구 가능 기간)</span><span class="v" id="three">₩0</span></div>
             <div class="pay"><span>결제 수단</span><span id="paywith">없음 (칼퇴)</span></div>
             <div class="bar"></div>
             <div class="foot">성수유니온랩 · ssulab.kr</div>
@@ -689,7 +691,7 @@
   const fmtW=n=>'₩'+Math.round(n).toLocaleString('ko-KR');
   const fmtMan=n=>{const m=Math.round(n/10000);return m>=1?('약 '+m.toLocaleString('ko-KR')+'만 원'):fmtW(n)};
   const hh=t=>{const h=Math.floor(t)%24, m=Math.round((t-Math.floor(t))*60);return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')};
-  const today=new Date(); document.getElementById('date').textContent='나의 공짜노동 영수증 · '+(today.getMonth()+1)+'월';
+  const today=new Date(); document.getElementById('date').textContent='나의 야근 영수증 · '+(today.getMonth()+1)+'월';
   function angleFor(t){const h12=(t%12); return h12*30;}
   function setHand(t){
     const a=angleFor(t)*Math.PI/180, x=C+R*Math.sin(a), y=C-R*Math.cos(a);
@@ -769,7 +771,7 @@
   function toast(m){const t=document.getElementById('dz-toast'); t.textContent=m; t.classList.add('on'); setTimeout(()=>t.classList.remove('on'),1800)}
   document.getElementById('share').addEventListener('click',async()=>{ try{trackEvent('dial_cta',{to:'share'})}catch(e){}
     const r=calc();
-    const msg = r.ext>0 ? `나 이번 달 ${fmtMan(r.month)}어치 공짜로 일했대… 3년이면 ${fmtMan(r.three)}. 너도 퇴근 시계 돌려 봐 👉 https://ssulab.kr/?src=share` : `난 칼퇴했다! 너는 몇 시에 퇴근했어? 👉 https://ssulab.kr/?src=share`;
+    const msg = r.ext>0 ? `나 한 달에 야근수당 ${fmtMan(r.month)}을 받았어야 한대… 3년이면 ${fmtMan(r.three)}. 너는 받고 있어? 퇴근 시계 돌려 봐 👉 https://ssulab.kr/?src=share` : `난 칼퇴했다! 너는 몇 시에 퇴근했어? 👉 https://ssulab.kr/?src=share`;
     const mobile = window.matchMedia('(pointer:coarse)').matches || /Android|iPhone|iPad/i.test(navigator.userAgent);
     try{ if(mobile && navigator.share){ await navigator.share({text:msg}); return } }catch(e){ if(e && e.name==='AbortError') return; }
     let ok=false;
