@@ -770,8 +770,9 @@
   document.getElementById('share').addEventListener('click',async()=>{ try{trackEvent('dial_cta',{to:'share'})}catch(e){}
     const r=calc();
     const msg = r.ext>0 ? `나 이번 달 ${fmtMan(r.month)}어치 공짜로 일했대… 3년이면 ${fmtMan(r.three)}. 너도 퇴근 시계 돌려 봐 👉 https://ssulab.kr/?src=share` : `난 칼퇴했다! 너는 몇 시에 퇴근했어? 👉 https://ssulab.kr/?src=share`;
-    try{ if(navigator.share){ await navigator.share({text:msg}); return } }catch(e){}
-    try{ await navigator.clipboard.writeText(msg); toast('문구를 복사했어요. 단톡방에 붙여 넣어 보세요'); }catch(e){ toast(msg); }
+    const mobile = window.matchMedia('(pointer:coarse)').matches || /Android|iPhone|iPad/i.test(navigator.userAgent);
+    try{ if(mobile && navigator.share){ await navigator.share({text:msg}); return } }catch(e){ if(e && e.name==='AbortError') return; }
+    try{ await navigator.clipboard.writeText(msg); toast('문구를 복사했어요. 카톡 단톡방에 붙여 넣어 보세요 (Ctrl+V)'); }catch(e){ toast(msg); }
   });
   render();
 })();
