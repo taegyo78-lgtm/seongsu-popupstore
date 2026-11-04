@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>성수유니온랩 · 지인연결</title>
+<meta property="og:title" content="내 야근수당 1분 계산기">
+<meta property="og:description" content="야근수당 제대로 받고 있는지 1분이면 계산돼요.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap">
+<style>
+:root{
+  --bg:#F2EFE8; --ink:#121212; --muted:#555555; --card:#FFFFFF; --line:#121212;
+  --orange:#FF8A3D; --green:#1FD16F; --yellow:#FFD43B; --off:#BDB8AE;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --bg:#161616; --ink:#F2EFE8; --muted:#B5B0A6; --card:#222222; --line:#F2EFE8; --off:#4A4740; color-scheme:dark; }
+}
+:root[data-theme="dark"]{ --bg:#161616; --ink:#F2EFE8; --muted:#B5B0A6; --card:#222222; --line:#F2EFE8; --off:#4A4740; color-scheme:dark; }
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font-family:'Noto Sans KR',system-ui,-apple-system,sans-serif;font-size:16px;line-height:1.55;word-break:keep-all;-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.wrap{max-width:440px;margin:0 auto;padding:28px 22px 32px;min-height:100svh;display:flex;flex-direction:column;gap:20px}
+.top{display:flex;justify-content:space-between;font-size:13px;font-weight:700}
+.top span:last-child{color:var(--muted)}
+h1{margin:0;font-size:28px;line-height:1.3;font-weight:900;letter-spacing:-.02em}
+h2{margin:6px 0 0;font-size:20px;font-weight:900}
+.hint{margin:0;font-size:13px;color:var(--muted);line-height:1.55}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.opt{min-height:48px;border:2px solid var(--line);background:transparent;font-size:15px;font-weight:700;cursor:pointer;padding:0 12px}
+.opt[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.pill{min-height:44px;border-radius:22px;padding:0 18px}
+.pill[aria-pressed="true"]{background:var(--orange);color:#121212}
+.cta{margin-top:auto;display:flex;flex-direction:column;gap:10px}
+.btn{min-height:56px;width:100%;border:2px solid var(--line);background:var(--ink);color:var(--bg);font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn.yellow{background:var(--yellow);color:#121212;font-weight:900}
+.btn.ghost{background:transparent;color:var(--ink);border:0;min-height:48px;font-size:15px}
+.btn.line{background:transparent;color:var(--ink);min-height:52px;font-size:16px}
+.msg{background:var(--card);border:2px solid var(--line);padding:18px;display:flex;flex-direction:column;gap:14px}
+.msg p{margin:0;font-size:16px;line-height:1.65}
+.linkcard{border:1px solid var(--line)}
+.linkcard b{display:block;background:#121212;color:#F2EFE8;padding:14px;font-size:17px;font-weight:900;line-height:1.35}
+.linkcard span{display:block;padding:10px 14px;font-size:13px;color:var(--muted);word-break:break-all}
+.coupon{background:var(--orange);color:#121212;border:2px solid #121212;padding:22px;display:flex;flex-direction:column;gap:10px}
+.coupon .no{font-size:56px;font-weight:900;letter-spacing:-.02em;line-height:1}
+.coupon small{font-size:14px;font-weight:700}
+.light{border:2px dashed var(--line);padding:22px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.bulb{width:72px;height:72px;border-radius:50%;background:var(--off);border:2px solid var(--line);transition:background .4s}
+.light strong{font-size:18px}
+.light p{margin:0;font-size:14px;color:var(--muted)}
+.greenhead{background:var(--green);color:#121212;margin:-28px -22px 0;padding:28px 22px 34px;border-bottom:2px solid #121212;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+.greenhead .top{align-self:stretch;color:#121212}
+.greenhead .top span:last-child{color:#121212}
+.check{width:108px;height:108px;border-radius:50%;background:#fff;border:3px solid #121212;display:flex;align-items:center;justify-content:center}
+@media (prefers-reduced-motion:no-preference){.check{animation:pop .5s ease-out}}
+@keyframes pop{0%{transform:scale(.4)}70%{transform:scale(1.1)}100%{transform:scale(1)}}
+.split{display:flex;border:2px solid var(--line)}
+.split>div{flex:1;padding:16px;display:flex;flex-direction:column;gap:4px}
+.split>div:first-child{border-right:2px solid var(--line)}
+.split>div:last-child{background:var(--ink);color:var(--bg)}
+.split small{font-size:13px;font-weight:700;opacity:.8}
+.split b{font-size:18px;font-weight:900}
+.staff{display:flex;gap:8px}
+.staff button{flex:1;min-height:44px;border:1px solid var(--muted);background:transparent;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer}
+.staff button[disabled]{border-style:dashed;cursor:default}
+label{font-size:14px;font-weight:700}
+.field{display:flex;flex-direction:column;gap:6px}
+.field input{min-height:48px;border:2px solid var(--line);background:var(--card);padding:0 14px;font-size:16px;width:100%}
+.result{background:var(--orange);color:#121212;border:2px solid #121212;padding:18px;display:flex;flex-direction:column;gap:6px}
+.result b{font-size:36px;font-weight:900;letter-spacing:-.02em}
+.result small{font-size:12px;font-weight:700}
+.darkhead{background:#121212;color:#F2EFE8;margin:-28px -22px 0;padding:24px 22px 20px;display:flex;flex-direction:column;gap:8px}
+.darkhead span{font-size:13px;font-weight:700;color:#BDB8AE}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:12px 18px;font-size:14px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .25s;max-width:90vw;text-align:center}
+.toast.on{opacity:1}
+.dialbox{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:6px}
+#dial{width:min(84vw,320px);height:auto;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab}
+#dial .face{fill:var(--card);stroke:var(--line);stroke-width:4}
+#dial .tick{stroke:var(--ink);stroke-width:3}
+#dial .tick.s{stroke-width:1.5;opacity:.5}
+#dial .num{fill:var(--ink);font-size:20px;font-weight:900;text-anchor:middle;dominant-baseline:central}
+#dial .arc{fill:none;stroke:#E0402A;stroke-width:16;stroke-linecap:round;opacity:.35}
+#dial .hand{stroke:#E0402A;stroke-width:7;stroke-linecap:round}
+#dial .knob{fill:#E0402A;stroke:#121212;stroke-width:3}
+#dial .pin{fill:var(--ink)}
+.dialread{display:flex;flex-direction:column;align-items:center;gap:2px}
+.dialread #offTime{font-size:24px;font-weight:900}
+.liveamt{display:flex;flex-direction:column;align-items:center;gap:2px}
+.liveamt span{font-size:14px;font-weight:700;color:var(--muted)}
+.liveamt b{font-size:40px;font-weight:900;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.night{margin:0;background:#E0402A;color:#fff;font-weight:900;padding:6px 12px;font-size:15px}
+.chiprow{display:flex;flex-direction:column;gap:8px}
+.receipt{position:relative;background:#FFFFFF;color:#121212;border:2px solid #121212;padding:22px 18px;display:flex;flex-direction:column;gap:8px;font-variant-numeric:tabular-nums}
+.receipt h2{margin:0 0 6px;font-size:18px;text-align:center}
+.rrow{display:flex;justify-content:space-between;gap:12px;font-size:14px}
+.rrow.warn{color:#B3261E;font-weight:900}
+.dash{border-top:2px dashed #121212;margin:6px 0}
+.rtotal{display:flex;flex-direction:column;gap:2px}
+.rtotal span{font-size:14px;font-weight:700}
+.rtotal b{font-size:34px;font-weight:900;letter-spacing:-.02em;text-align:right}
+.ask{text-align:right;font-weight:900;color:#B3261E;font-size:15px}
+.stamp{position:absolute;top:14px;right:14px;border:3px solid #E0402A;color:#E0402A;font-weight:900;font-size:20px;padding:2px 10px;transform:rotate(-12deg)}
+@media (prefers-reduced-motion:no-preference){.stamp.go{animation:stampin .35s ease-out}}
+@keyframes stampin{0%{transform:rotate(-12deg) scale(2.2);opacity:0}100%{transform:rotate(-12deg) scale(1);opacity:1}}
+[hidden]{display:none!important}
+
+/* 부스 모니터 */
+body.counter{background:#121212;color:#F2EFE8}
+.board{min-height:100svh;padding:clamp(24px,4vw,64px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(24px,5vw,72px);align-items:center}
+.board .live{display:flex;gap:12px;align-items:center;font-size:clamp(14px,1.4vw,20px);font-weight:700}
+.board .dot{width:14px;height:14px;border-radius:50%;background:var(--green)}
+@media (prefers-reduced-motion:no-preference){.board .dot{animation:blink 1.6s infinite}}
+@keyframes blink{50%{opacity:.25}}
+.board h1{font-size:clamp(28px,3.4vw,48px);margin-top:18px}
+.big{font-size:clamp(96px,14vw,200px);font-weight:900;line-height:1;letter-spacing:-.04em;margin:12px 0}
+.big small{font-size:.3em}
+.opened{display:flex;gap:14px;align-items:center;font-size:clamp(18px,2vw,28px);font-weight:700;flex-wrap:wrap}
+.opened b{background:var(--green);color:#121212;padding:4px 14px}
+.bars{display:flex;flex-direction:column;gap:20px}
+.bars .cap{font-size:18px;font-weight:700;color:#BDB8AE}
+.bar{display:flex;flex-direction:column;gap:8px}
+.bar .row{display:flex;justify-content:space-between;font-size:clamp(16px,1.7vw,24px);font-weight:700}
+.bar .track{height:22px;background:#2A2A2A}
+.bar .fill{height:22px;background:var(--orange);transition:width .6s}
+.bar .fillg{height:6px;background:var(--green);transition:width .6s}
+.foot{font-size:clamp(16px,1.6vw,22px);font-weight:700;margin-top:24px}
+</style>
+</head>
+<body>
+
+<!-- ① 회사·관계 -->
+<main class="wrap" id="s-select" hidden>
+  <div class="top"><span>성수유니온랩</span><span>1 / 2</span></div>
+  <h1>성수 쪽 지인이<br>어디서 일해요?</h1>
+  <div class="grid2" id="companies"></div>
+  <h2>어떤 사이예요?</h2>
+  <div class="chips" id="relations"></div>
+  <p class="hint">지인의 이름과 연락처는 받지 않아요. 메시지는 직접 보내시는 거예요.</p>
+  <div class="cta"><button class="btn" id="toSend" disabled>다음</button></div>
+</main>
+
+<!-- ② 보내기 -->
+<main class="wrap" id="s-send" hidden>
+  <div class="top"><span>성수유니온랩</span><span>2 / 2</span></div>
+  <h1>이 메시지를<br><span id="target"></span></h1>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <span class="hint" style="font-weight:700">나는 지인에게</span>
+    <div class="chips" id="senders"></div>
+  </div>
+  <div class="msg">
+    <p id="msgText"></p>
+    <div class="linkcard"><b>내 야근수당<br>1분 계산기</b><span id="msgLink">링크 만드는 중…</span></div>
+  </div>
+  <p class="hint">링크 끝 코드로 열렸는지만 알 수 있어요. 지인 정보는 남지 않아요.</p>
+  <div class="cta">
+    <button class="btn yellow" id="shareBtn" disabled>카톡으로 보내기</button>
+    <button class="btn ghost" id="smsBtn" disabled>문자로 보내기</button>
+    <button class="btn ghost" id="backSelect">회사 다시 고르기</button>
+  </div>
+</main>
+
+<!-- ③ 쿠폰·대기 / ④ 초록불 -->
+<main class="wrap" id="s-coupon" hidden>
+  <div id="waitView">
+    <div style="display:flex;flex-direction:column;gap:22px">
+      <div class="top"><span>성수유니온랩</span><span></span></div>
+      <h1>보냈어요!<br>컵어묵 받아가세요</h1>
+      <div class="coupon">
+        <small>컵어묵 쿠폰</small>
+        <span class="no" id="couponNo">No.0000</span>
+        <small>스태프에게 이 화면을 보여주세요</small>
+      </div>
+      <div class="light">
+        <span class="bulb" aria-hidden="true"></span>
+        <strong>아직 안 열어봤어요</strong>
+        <p>지인이 링크를 열면 이 불이 초록색으로 바뀌어요. 그때 컵어묵 한 컵 더 드려요!</p>
+      </div>
+    </div>
+  </div>
+  <div id="greenView" hidden style="display:flex;flex-direction:column;gap:14px">
+    <div class="greenhead">
+      <div class="top"><span>성수유니온랩</span><span></span></div>
+      <span class="check" aria-hidden="true"><svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#121212" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg></span>
+      <h1>지인이 링크를<br>열었어요!</h1>
+      <span style="font-size:15px;font-weight:700" id="arrived"></span>
+    </div>
+    <div class="split" style="margin-top:10px">
+      <div><small>컵어묵</small><b id="cupState">받기 전</b></div>
+      <div><small>추가</small><b>한 컵 더</b></div>
+    </div>
+    <div style="font-size:44px;font-weight:900;letter-spacing:-.02em" id="couponNo2">No.0000</div>
+    <p class="hint">스태프에게 이 화면을 한 번 더 보여주세요.</p>
+  </div>
+  <div class="staff" aria-label="스태프 확인">
+    <button id="cupBtn">스태프 · 컵어묵 지급</button>
+    <button id="coffeeBtn" hidden>스태프 · 한 컵 더 지급</button>
+  </div>
+  <div class="cta">
+    <button class="btn line" id="again">다른 지인에게도 보내기</button>
+  </div>
+</main>
+
+<!-- ⑤ 지인이 받는 화면 -->
+<main class="wrap" id="s-friend" hidden>
+  <div class="darkhead">
+    <span id="fromWho">지인이 보낸 링크로 들어왔어요</span>
+    <h1>어제 몇 시에<br>퇴근했어요?</h1>
+  </div>
+  <div class="dialbox">
+    <svg id="dial" viewBox="0 0 300 300" role="img" aria-label="퇴근 시각을 고르는 시계. 빨간 바늘을 돌려 보세요">
+      <circle class="face" cx="150" cy="150" r="140"></circle>
+      <g id="ticks"></g>
+      <path id="arc" class="arc" d=""></path>
+      <line id="hand" class="hand" x1="150" y1="150" x2="150" y2="270"></line>
+      <circle id="knob" class="knob" cx="150" cy="270" r="17"></circle>
+      <circle class="pin" cx="150" cy="150" r="7"></circle>
+    </svg>
+    <div class="dialread">
+      <span id="offTime">오후 6:00 퇴근</span>
+      <span class="hint" id="dialHint">빨간 바늘을 잡고 돌려 보세요</span>
+    </div>
+    <div class="liveamt"><span>한 달 받았어야 할 수당</span><b id="liveAmt">0원</b></div>
+    <p class="night" id="nightNote" hidden>밤 10시부터는 수당이 2배예요!</p>
+  </div>
+  <div class="chiprow">
+    <span class="hint" style="font-weight:700">연봉</span>
+    <div class="chips" id="salChips"></div>
+    <div class="field" id="salCustom" hidden><label for="salInput">연봉 (만원)</label><input id="salInput" inputmode="numeric" placeholder="예: 3200"></div>
+  </div>
+  <div class="chiprow">
+    <span class="hint" style="font-weight:700">출근</span>
+    <div class="chips" id="startChips"></div>
+  </div>
+  <section class="receipt" id="receipt" hidden aria-live="polite">
+    <span class="stamp" id="stamp">띵!</span>
+    <h2>나의 야근 영수증</h2>
+    <div class="rrow"><span>출근</span><span id="rStart"></span></div>
+    <div class="rrow"><span>퇴근</span><span id="rOff"></span></div>
+    <div class="rrow"><span>내 시급</span><span id="rHourly"></span></div>
+    <div class="rrow"><span>하루 연장</span><span id="rOt"></span></div>
+    <div class="rrow" id="rNightRow"><span>밤 10시 이후</span><span id="rNight"></span></div>
+    <div class="rrow warn" id="rWarn" hidden><span>주 12시간 연장 한도</span><span>초과</span></div>
+    <div class="dash"></div>
+    <div class="rtotal"><span>한 달 받았어야 할 연장·야간수당</span><b id="rMonth"></b></div>
+    <div class="ask">이만큼 받으셨나요?</div>
+    <div class="rrow"><span>3년이면 최대 (청구 가능 기간)</span><b id="rThree"></b></div>
+    <div class="rrow"><span>결제 수단</span><span id="rPay">나의 저녁</span></div>
+  </section>
+  <p class="hint">주 5일 · 5인 이상 사업장 · 포괄임금 포함분 없음 기준의 단순 추정이에요.</p>
+  <div class="cta">
+    <a class="btn" id="chatBtn" href="#" target="_blank" rel="noopener">진짜 받을 수 있는지 물어보기</a>
+    <button class="btn line" id="fwdBtn" type="button">동료에게도 보내기</button>
+    <span class="hint" style="text-align:center">성수동119 익명방으로 연결돼요. 이름 안 물어봐요.</span>
+  </div>
+</main>
+
+<!-- 부스 모니터 -->
+<div class="board" id="s-counter" hidden>
+  <div>
+    <div class="live"><span class="dot"></span>LIVE · 성수유니온랩 부스</div>
+    <h1>지금까지 성수로 간 카톡</h1>
+    <div class="big"><span id="cSent">0</span><small>통</small></div>
+    <div class="opened"><b id="cOpened">0명</b>이 링크를 열었어요</div>
+    <div class="foot">QR 찍고 한 통 보태주세요! 컵어묵 드려요</div>
+  </div>
+  <div class="bars">
+    <span class="cap">어디로 갔나 · 주황은 보낸 수 · 초록은 열린 수</span>
+    <div id="cBars" class="bars"></div>
+    <span class="cap" id="cChat">익명방 입장 0명</span>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script type="module">
+/* ============ 설정: 여기만 채우면 됩니다 ============ */
+const firebaseConfig = {
+  apiKey: "AIzaSyCSw1qJSbWrRqbnAxR6J8Ko6mtWHkmywbM",
+  authDomain: "seongsu-compass.firebaseapp.com",
+  projectId: "seongsu-compass",
+  storageBucket: "seongsu-compass.firebasestorage.app",
+  messagingSenderId: "405081326197",
+  appId: "1:405081326197:web:54e175f364ade80ff56e3c",
+  measurementId: "G-6RK4FNKLHW"
+};
+const OPENCHAT_URL = "https://open.kakao.com/o/gGgqYYPi"; // 성수동119 익명 오픈채팅방 주소
+const EVENT = "rally2026";                                   // 행사 구분값
+/* ================================================ */
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, collection, query, where,
+         runTransaction, serverTimestamp, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const db = getFirestore(initializeApp(firebaseConfig));
+const REFS = "rally_refs";
+const $ = (id) => document.getElementById(id);
+
+const COMPANIES = ["무신사","젠틀몬스터","쿠팡","SM엔터","크래프톤","패션잡화","이커머스","기타"];
+const RELATIONS = ["자녀","조카·친척","회사 후배","친구"];
+const SENDERS = {
+  dad:    { label:"아빠",      target:"자녀에게 보내주세요", msg:"아빠 오늘 노동자대회 왔는데 너네 업계 얘기가 나오더라. 야근수당 제대로 받고 있는지 1분이면 계산된대. 한번 해봐!" },
+  mom:    { label:"엄마",      target:"자녀에게 보내주세요", msg:"엄마 오늘 노동자대회 왔는데 너네 업계 얘기가 나오더라. 야근수당 제대로 받고 있는지 1분이면 계산된대. 한번 해봐!" },
+  kin:    { label:"삼촌·이모", target:"조카에게 보내주세요", msg:"조카야 오늘 노동자대회 왔는데 너네 업계 얘기가 나오더라. 야근수당 제대로 받고 있는지 1분이면 계산된대. 한번 해봐!" },
+  senior: { label:"선배",      target:"후배에게 보내주세요", msg:"나 오늘 노동자대회 왔는데 요즘 너네 업계 얘기가 많이 나오더라. 야근수당 제대로 받고 있는지 1분이면 계산된대. 한번 해봐!" },
+  friend: { label:"친구",      target:"친구에게 보내주세요", msg:"야 나 오늘 노동자대회 왔는데 너네 회사 얘기 나옴ㅋㅋ 야근수당 제대로 받는지 1분이면 계산된대. 진짜 해봐!" }
+};
+const REL_TO_SENDER = { "자녀":"dad", "조카·친척":"kin", "회사 후배":"senior", "친구":"friend" };
+
+const state = { company:null, relation:null, sender:"dad", code:null, couponNo:null };
+
+function show(id){ ["s-select","s-send","s-coupon","s-friend","s-counter"].forEach(s => $(s).hidden = (s !== id)); window.scrollTo(0,0); }
+function toast(t){ const el=$("toast"); el.textContent=t; el.classList.add("on"); clearTimeout(toast._t); toast._t=setTimeout(()=>el.classList.remove("on"),2200); }
+function store(k,v){ try{ v==null?localStorage.removeItem(k):localStorage.setItem(k,v); }catch(e){} }
+function load(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+const linkFor = (code) => location.origin + location.pathname + "?r=" + code;
+const pad = (n) => "No." + String(n).padStart(4,"0");
+
+function makeChips(box, list, cls, onPick){
+  box.innerHTML = "";
+  list.forEach(item => {
+    const b = document.createElement("button");
+    b.className = cls; b.type = "button";
+    b.textContent = item.label ?? item; b.setAttribute("aria-pressed","false");
+    b.onclick = () => { [...box.children].forEach(c => c.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); onPick(item.id ?? item); };
+    box.appendChild(b);
+  });
+}
+
+/* ---------- 참가자 흐름 ---------- */
+function initSelect(){
+  makeChips($("companies"), COMPANIES, "opt", v => { state.company=v; check(); });
+  makeChips($("relations"), RELATIONS, "opt pill", v => { state.relation=v; state.sender=REL_TO_SENDER[v]||"dad"; check(); });
+  function check(){ $("toSend").disabled = !(state.company && state.relation); }
+  $("toSend").onclick = goSend;
+  show("s-select");
+}
+
+function newCode(){ const a="ABCDEFGHJKMNPQRSTUVWXYZ23456789"; let s=""; for(let i=0;i<5;i++) s+=a[Math.floor(Math.random()*a.length)]; return s; }
+
+async function goSend(){
+  show("s-send");
+  makeChips($("senders"), Object.entries(SENDERS).map(([id,v])=>({id,label:v.label})), "opt", v => { state.sender=v; renderMsg(); });
+  [...$("senders").children].forEach((c,i)=>{ if(Object.keys(SENDERS)[i]===state.sender) c.setAttribute("aria-pressed","true"); });
+  renderMsg();
+  $("shareBtn").disabled = true; $("smsBtn").disabled = true;
+  try{
+    let code;
+    for(let i=0;i<5;i++){ code=newCode(); const s=await getDoc(doc(db,REFS,code)); if(!s.exists()) break; }
+    await setDoc(doc(db,REFS,code), {
+      event:EVENT, company:state.company, relation:state.relation, sender:state.sender,
+      createdAt:serverTimestamp(), sent:false, opened:false, opens:0, chatClicked:false, cupGiven:false, coffeeGiven:false
+    });
+    state.code = code;
+    $("msgLink").textContent = linkFor(code);
+    $("shareBtn").disabled = false; $("smsBtn").disabled = false;
+  }catch(e){ console.error(e); $("msgLink").textContent = "연결이 불안정해요. 잠시 뒤 다시 눌러주세요."; }
+}
+function renderMsg(){ const s=SENDERS[state.sender]; $("target").textContent="지인에게 보내주세요"; $("msgText").textContent=s.msg; }
+$("backSelect").onclick = () => show("s-select");
+
+async function markSent(){
+  const ref = doc(db,REFS,state.code);
+  let no;
+  try{
+    no = await runTransaction(db, async (tx) => {
+      const m = doc(db,"rally_meta",EVENT);
+      const snap = await tx.get(m);
+      const n = (snap.exists() ? snap.data().seq : 0) + 1;
+      tx.set(m, { seq:n }, { merge:true });
+      tx.update(ref, { sent:true, sentAt:serverTimestamp(), couponNo:n });
+      return n;
+    });
+  }catch(e){ console.error(e); await updateDoc(ref,{ sent:true, sentAt:serverTimestamp() }).catch(()=>{}); }
+  store("ssulab_code", state.code);
+  openCoupon(state.code, no);
+}
+
+$("shareBtn").onclick = async () => {
+  const text = SENDERS[state.sender].msg + "\n" + linkFor(state.code);
+  if (navigator.share) {
+    try { await navigator.share({ text }); await markSent(); }
+    catch(e){ if (e.name !== "AbortError") toast("공유가 안 됐어요. 문자로 보내기를 눌러주세요."); }
+  } else {
+    try { await navigator.clipboard.writeText(text); toast("메시지를 복사했어요. 카톡에 붙여넣어 보내주세요!"); }
+    catch(e){ toast("복사가 안 돼요. 문자로 보내기를 눌러주세요."); return; }
+    await markSent();
+  }
+};
+$("smsBtn").onclick = async () => {
+  const text = SENDERS[state.sender].msg + " " + linkFor(state.code);
+  const sep = /iPhone|iPad|iPod/.test(navigator.userAgent) ? "&" : "?";
+  location.href = "sms:" + sep + "body=" + encodeURIComponent(text);
+  setTimeout(markSent, 800);
+};
+
+let unsubCoupon = null;
+function openCoupon(code, no){
+  show("s-coupon");
+  if (unsubCoupon) unsubCoupon();
+  $("waitView").hidden = false; $("greenView").hidden = true;
+  if (no) { $("couponNo").textContent = pad(no); $("couponNo2").textContent = pad(no); }
+  unsubCoupon = onSnapshot(doc(db,REFS,code), (snap) => {
+    if (!snap.exists()) return;
+    const d = snap.data();
+    if (d.couponNo) { $("couponNo").textContent = pad(d.couponNo); $("couponNo2").textContent = pad(d.couponNo); }
+    const wasGreen = !$("greenView").hidden;
+    $("waitView").hidden = !!d.opened; $("greenView").hidden = !d.opened;
+    $("arrived").textContent = (d.company||"성수") + "로 간 카톡이 도착했어요";
+    if (d.opened && !wasGreen && navigator.vibrate) navigator.vibrate([120,60,120]);
+    $("cupState").textContent = d.cupGiven ? "받음" : "받기 전";
+    $("cupBtn").disabled = !!d.cupGiven; $("cupBtn").textContent = d.cupGiven ? "컵어묵 지급 완료" : "스태프 · 컵어묵 지급";
+    $("coffeeBtn").hidden = !d.opened;
+    $("coffeeBtn").disabled = !!d.coffeeGiven; $("coffeeBtn").textContent = d.coffeeGiven ? "한 컵 더 지급 완료" : "스태프 · 한 컵 더 지급";
+  });
+  $("cupBtn").onclick = () => confirm("스태프 확인: 컵어묵을 드렸나요?") && updateDoc(doc(db,REFS,code),{ cupGiven:true });
+  $("coffeeBtn").onclick = () => confirm("스태프 확인: 컵어묵 한 컵 더 드렸나요?") && updateDoc(doc(db,REFS,code),{ coffeeGiven:true });
+}
+$("again").onclick = () => { store("ssulab_code", null); state.company=null; state.relation=null; initSelect(); $("toSend").disabled=true; };
+
+/* ---------- 지인 화면: 퇴근 시계 ---------- */
+async function initFriend(code){
+  show("s-friend");
+  $("chatBtn").href = OPENCHAT_URL;
+  const ref = doc(db,REFS,code);
+  try{
+    const snap = await getDoc(ref);
+    if (snap.exists()) {
+      const d = snap.data();
+      const who = SENDERS[d.sender]?.label;
+      if (who) $("fromWho").textContent = who + "가 보낸 링크로 들어왔어요";
+      const key = "ssulab_opened_" + code;
+      if (!load(key)) {
+        await updateDoc(ref, d.opened ? { opens:increment(1) } : { opened:true, openedAt:serverTimestamp(), opens:increment(1) });
+        store(key, "1");
+      }
+    }
+  }catch(e){ console.error(e); }
+  $("chatBtn").addEventListener("click", () => { updateDoc(ref,{ chatClicked:true }).catch(()=>{}); });
+
+  const C = 150, R = 118;
+  const f = { salary:2800, start:9, off:18, shown:0, target:0, dialed:false, lastHour:18 };
+
+  // 눈금과 숫자
+  const NS = "http://www.w3.org/2000/svg", g = $("ticks");
+  for (let i=0;i<60;i++){
+    const a = i*6*Math.PI/180, big = i%5===0, r1 = big?122:128, r2 = 134;
+    const l = document.createElementNS(NS,"line");
+    l.setAttribute("x1",C+r1*Math.sin(a)); l.setAttribute("y1",C-r1*Math.cos(a));
+    l.setAttribute("x2",C+r2*Math.sin(a)); l.setAttribute("y2",C-r2*Math.cos(a));
+    l.setAttribute("class", big?"tick":"tick s"); g.appendChild(l);
+    if (big){ const n=document.createElementNS(NS,"text"); const h=i/5||12;
+      n.setAttribute("x",C+100*Math.sin(a)); n.setAttribute("y",C-100*Math.cos(a)); n.setAttribute("class","num"); n.textContent=h; g.appendChild(n); }
+  }
+
+  const ang = (off) => ((off % 12) / 12) * 2*Math.PI;            // 시계 각도(라디안)
+  const pt = (a, r) => [C + r*Math.sin(a), C - r*Math.cos(a)];
+  const won = (v) => Math.round(v).toLocaleString("ko-KR") + "원";
+  const clock = (h) => { const hh = Math.floor(h)%24, mm = Math.round((h - Math.floor(h))*60);
+    const ap = hh < 12 ? (hh < 5 ? "새벽" : "오전") : (hh < 18 ? "오후" : "저녁");
+    const h12 = hh % 12 === 0 ? 12 : hh % 12; return ap + " " + h12 + ":" + String(mm).padStart(2,"0"); };
+
+  function calc(){
+    const hourly = f.salary*10000/12/209;
+    const work = f.off - f.start - 1;
+    const ot = Math.max(0, work - 8);
+    const night = Math.max(0, f.off - 22);
+    const month = (ot*1.5 + night*0.5) * hourly * 21.7;
+    return { hourly, ot, night, month, three: month*36, overLimit: ot*5 > 12 };
+  }
+
+  function drawHand(){
+    const a = ang(f.off), [x,y] = pt(a, R);
+    $("hand").setAttribute("x2",x); $("hand").setAttribute("y2",y);
+    $("knob").setAttribute("cx",x); $("knob").setAttribute("cy",y);
+    const a0 = Math.PI, [x0,y0] = pt(a0, R+8), [x1,y1] = pt(a, R+8);
+    const sweep = f.off - 18;
+    $("arc").setAttribute("d", sweep <= 0.01 ? "" : `M${x0} ${y0} A${R+8} ${R+8} 0 ${sweep > 6 ? 1 : 0} 1 ${x1} ${y1}`);
+    $("offTime").textContent = clock(f.off) + " 퇴근";
+    $("nightNote").hidden = f.off <= 22;
+  }
+
+  function update(){
+    drawHand();
+    const r = calc(); f.target = r.month;
+    if (!update._raf) update._raf = requestAnimationFrame(roll);
+    return r;
+  }
+  function roll(){
+    update._raf = null;
+    const diff = f.target - f.shown;
+    f.shown = Math.abs(diff) < 50 ? f.target : f.shown + diff*0.18;
+    $("liveAmt").textContent = won(f.shown);
+    if (f.shown !== f.target) update._raf = requestAnimationFrame(roll);
+  }
+
+  function printReceipt(){
+    const r = calc();
+    if (r.month <= 0) { $("receipt").hidden = true; return; }
+    $("rStart").textContent = clock(f.start); $("rOff").textContent = clock(f.off);
+    $("rHourly").textContent = won(r.hourly);
+    $("rOt").textContent = r.ot.toFixed(1).replace(/\.0$/,"") + "시간";
+    $("rNightRow").hidden = r.night <= 0; $("rNight").textContent = r.night.toFixed(1).replace(/\.0$/,"") + "시간";
+    $("rWarn").hidden = !r.overLimit;
+    $("rMonth").textContent = won(r.month); $("rThree").textContent = won(r.three);
+    $("rPay").textContent = f.off > 22 ? "나의 밤" : "나의 저녁";
+    $("receipt").hidden = false;
+    const s = $("stamp"); s.classList.remove("go"); void s.offsetWidth; s.classList.add("go");
+    if (navigator.vibrate) navigator.vibrate(30);
+    if (!f.dialed) { f.dialed = true; updateDoc(ref,{ dialUsed:true }).catch(()=>{}); }
+  }
+
+  // 바늘 돌리기
+  const svg = $("dial");
+  function setFromPointer(e){
+    const b = svg.getBoundingClientRect();
+    const x = (e.clientX - b.left) * 300 / b.width - C, y = (e.clientY - b.top) * 300 / b.height - C;
+    let h = (Math.atan2(x, -y) * 180/Math.PI + 360) % 360 / 30;   // 0~12
+    let off = h >= 6 ? h + 12 : h + 24;                              // 6~12 → 18~24, 0~6 → 24~30
+    if (off > 26 && off < 28) off = 26; else if (off >= 28) off = 18; // 새벽 2시까지만
+    off = Math.round(off * 6) / 6;                                    // 10분 단위
+    if (Math.abs(off - f.off) > 6) return;                            // 반대편으로 튀는 것 방지
+    f.off = off;
+    if (Math.floor(off) !== f.lastHour) { f.lastHour = Math.floor(off); if (navigator.vibrate) navigator.vibrate(8); }
+    $("dialHint").hidden = true;
+    update();
+  }
+  let dragging = false;
+  svg.addEventListener("pointerdown", (e) => { dragging = true; svg.setPointerCapture(e.pointerId); setFromPointer(e); });
+  svg.addEventListener("pointermove", (e) => { if (dragging) setFromPointer(e); });
+  const end = () => { if (dragging) { dragging = false; printReceipt(); } };
+  svg.addEventListener("pointerup", end); svg.addEventListener("pointercancel", end);
+
+  // 칩
+  makeChips($("salChips"), [{id:2800,label:"2,800만"},{id:3600,label:"3,600만"},{id:4500,label:"4,500만"},{id:"x",label:"직접"}], "opt pill", (v) => {
+    if (v === "x") { $("salCustom").hidden = false; $("salInput").focus(); return; }
+    $("salCustom").hidden = true; f.salary = v; update(); if (f.dialed) printReceipt();
+  });
+  $("salChips").children[0].setAttribute("aria-pressed","true");
+  $("salInput").addEventListener("input", () => { const v = Number($("salInput").value.replace(/[^0-9]/g,"")); if (v > 500) { f.salary = v; update(); if (f.dialed) printReceipt(); } });
+  makeChips($("startChips"), [{id:8,label:"8시"},{id:9,label:"9시"},{id:10,label:"10시"}], "opt pill", (v) => { f.start = v; update(); if (f.dialed) printReceipt(); });
+  $("startChips").children[1].setAttribute("aria-pressed","true");
+
+  // 동료에게 보내기 (지인의 지인으로 확장)
+  $("fwdBtn").onclick = async () => {
+    const r = calc();
+    const text = (r.month > 0 ? `나 한 달에 야근수당 ${Math.round(r.month/10000)}만원을 받았어야 한대… 너는 받고 있어? ` : "") + "퇴근 시계 돌려 봐 " + location.origin + "/?src=friend";
+    if (navigator.share) { try { await navigator.share({ text }); } catch(e){} }
+    else { try { await navigator.clipboard.writeText(text); toast("복사했어요. 카톡에 붙여넣어 보내주세요!"); } catch(e){} }
+  };
+
+  update();
+}
+
+/* ---------- 부스 모니터 ---------- */
+function initCounter(){
+  document.body.classList.add("counter");
+  show("s-counter");
+  onSnapshot(query(collection(db,REFS), where("event","==",EVENT)), (qs) => {
+    let sent=0, opened=0, chat=0; const by={};
+    qs.forEach(s => { const d=s.data(); if(!d.sent) return; sent++; if(d.opened) opened++; if(d.chatClicked) chat++;
+      by[d.company] ??= {s:0,o:0}; by[d.company].s++; if(d.opened) by[d.company].o++; });
+    $("cSent").textContent = sent.toLocaleString("ko-KR");
+    $("cOpened").textContent = opened.toLocaleString("ko-KR") + "명";
+    $("cChat").textContent = "익명방 입장 " + chat + "명";
+    const rows = Object.entries(by).sort((a,b)=>b[1].s-a[1].s).slice(0,6);
+    const max = rows[0]?.[1].s || 1;
+    $("cBars").innerHTML = rows.length ? "" : '<span class="cap">첫 카톡을 기다리는 중이에요</span>';
+    rows.forEach(([name,v]) => {
+      const el = document.createElement("div"); el.className="bar";
+      el.innerHTML = `<div class="row"><span></span><span>${v.s} · 열림 ${v.o}</span></div><div class="track"><div class="fill" style="width:${v.s/max*100}%"></div><div class="fillg" style="width:${v.o/max*100}%"></div></div>`;
+      el.querySelector(".row span").textContent = name;
+      $("cBars").appendChild(el);
+    });
+  });
+}
+
+/* ---------- 라우팅 ---------- */
+const p = new URLSearchParams(location.search);
+if (p.get("view") === "counter") initCounter();
+else if (p.get("r")) initFriend(p.get("r").toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,8));
+else {
+  const saved = load("ssulab_code");
+  if (saved) { state.code = saved; openCoupon(saved); } else initSelect();
+}
+</script>
+</body>
+</html>
