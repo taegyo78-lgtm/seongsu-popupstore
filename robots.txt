@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /friend
+
+Sitemap: https://ssulab.kr/sitemap.xml
