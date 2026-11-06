@@ -492,7 +492,23 @@
 </style>
 </head>
 <body>
-
+<a href="/report?src=home" id="ssu-report-bar" onclick="try{trackEvent('report_click')}catch(e){}">
+  <span class="ssu-dot"></span>
+  <span class="ssu-txt"><b>노동부 근로감독 중</b> 회사 이름만 익명 제보하기</span>
+  <span class="ssu-arrow">→</span>
+</a>
+<style>
+#ssu-report-bar{position:sticky;top:0;z-index:999;display:flex;align-items:center;justify-content:center;gap:10px;
+  min-height:48px;padding:10px 16px;padding-top:calc(10px + env(safe-area-inset-top,0px));
+  background:#D7372A;color:#FFFFFF;text-decoration:none;font-family:'Pretendard Variable',Pretendard,'Noto Sans KR',sans-serif;
+  font-size:15px;line-height:1.4;word-break:keep-all;box-sizing:border-box}
+#ssu-report-bar:hover,#ssu-report-bar:focus-visible{background:#B82D22;color:#FFFFFF}
+#ssu-report-bar b{font-weight:900;margin-right:4px}
+#ssu-report-bar .ssu-dot{width:9px;height:9px;border-radius:50%;background:#FFFFFF;flex-shrink:0}
+#ssu-report-bar .ssu-arrow{font-weight:900}
+@media (prefers-reduced-motion:no-preference){#ssu-report-bar .ssu-dot{animation:ssuBlink 1.4s infinite}}
+@keyframes ssuBlink{50%{opacity:.2}}
+</style>
 <header>
   <div class="wrap nav-row">
     <div class="brand">
