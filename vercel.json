@@ -1,4 +1,12 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/hot", "destination": "/report?src=hotpack" },
+    { "source": "/go",  "destination": "/report?src=banner" },
+    { "source": "/yt",  "destination": "/report?src=yt" },
+    { "source": "/ig",  "destination": "/report?src=ig" },
+    { "source": "/119", "destination": "/report?src=119" },
+    { "source": "/street", "destination": "/report?src=street" }
+  ]
 }
