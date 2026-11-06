@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>노동부 근로감독 익명 제보 · 썰랩</title>
+<meta name="description" content="지금 노동부 근로감독이 진행 중이에요. 회사 이름만 알려주세요. 이름은 성수유니온랩이 지키고 회사 이름은 감독관 책상에 올립니다.">
+<meta property="og:title" content="회사 이름만 알려주세요">
+<meta property="og:description" content="지금 노동부 근로감독 중 · 1분 익명 제보">
+<meta property="og:image" content="https://ssulab.kr/og-thumbnail.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6RK4FNKLHW"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){ dataLayer.push(arguments); }
+gtag('js', new Date());
+gtag('config', 'G-6RK4FNKLHW', { anonymize_ip: true, allow_google_signals: false });
+window.SRC = ((new URLSearchParams(location.search).get('src')) || 'direct').replace(/[^\w-]/g,'').slice(0,40) || 'direct';
+function track(name, p){ try { gtag('event', name, Object.assign({ app:'report', source: window.SRC }, p || {})); } catch(e){} }
+track('report_visit');
+</script>
+<style>
+:root{
+  --bg:#F2EFE8; --ink:#121212; --muted:#555555; --card:#FFFFFF; --line:#121212;
+  --red:#D7372A; --orange:#FF8A3D; --green:#1FD16F;
+  color-scheme: light;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --bg:#161616; --ink:#F2EFE8; --muted:#B5B0A6; --card:#222222; --line:#F2EFE8; color-scheme:dark; }
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font-family:'Noto Sans KR',system-ui,-apple-system,sans-serif;font-size:16px;line-height:1.55;word-break:keep-all;-webkit-font-smoothing:antialiased}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.wrap{max-width:460px;margin:0 auto;padding:24px 20px 40px;display:flex;flex-direction:column;gap:22px}
+.top{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:700}
+.live{display:inline-flex;align-items:center;gap:6px;background:var(--red);color:#fff;padding:3px 10px}
+.live i{width:8px;height:8px;border-radius:50%;background:#fff;display:inline-block}
+@media (prefers-reduced-motion:no-preference){.live i{animation:bl 1.4s infinite}}
+@keyframes bl{50%{opacity:.2}}
+h1{margin:0;font-size:30px;line-height:1.28;font-weight:900;letter-spacing:-.02em}
+.lead{margin:0;font-size:15px;color:var(--muted)}
+.lead b{color:var(--ink)}
+.q{display:flex;flex-direction:column;gap:10px;padding-top:18px;border-top:2px solid var(--line)}
+.q h2{margin:0;font-size:18px;font-weight:900;line-height:1.4}
+.q h2 small{display:block;font-size:13px;font-weight:400;color:var(--muted);margin-top:4px}
+.num{display:inline-block;min-width:24px;font-weight:900;color:var(--red)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.col{display:flex;flex-direction:column;gap:8px}
+.opt{min-height:48px;border:2px solid var(--line);background:transparent;font-size:15px;font-weight:700;cursor:pointer;padding:8px 12px;text-align:left}
+.opt[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.opt.warn[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#fff}
+.field input,.field textarea{width:100%;border:2px solid var(--line);background:var(--card);padding:12px 14px;font-size:16px}
+.field textarea{min-height:110px;resize:vertical}
+.tip{background:var(--card);border:1px solid var(--line);padding:12px 14px;font-size:14px;line-height:1.6}
+.tip b{color:var(--red)}
+.counter{font-size:12px;color:var(--muted);text-align:right}
+.check{display:flex;gap:12px;align-items:flex-start;font-size:14px;line-height:1.55;cursor:pointer}
+.check input{width:22px;height:22px;margin:2px 0 0;flex-shrink:0;accent-color:var(--red)}
+.btn{min-height:58px;width:100%;border:2px solid var(--line);background:var(--ink);color:var(--bg);font-size:17px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn.red{background:var(--red);border-color:var(--red);color:#fff}
+.btn.line{background:transparent;color:var(--ink)}
+.promise{border:2px solid var(--line);padding:14px 16px;font-size:13px;line-height:1.7}
+.promise b{display:block;font-size:14px;margin-bottom:4px}
+.done{display:flex;flex-direction:column;gap:18px}
+.stamp{align-self:flex-start;border:3px solid var(--red);color:var(--red);font-weight:900;font-size:20px;padding:4px 14px;transform:rotate(-6deg)}
+.same{background:var(--ink);color:var(--bg);padding:18px;font-size:16px;font-weight:700;line-height:1.6}
+.same b{font-size:28px;color:var(--orange)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:12px 18px;font-size:14px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .25s;max-width:90vw;text-align:center}
+.toast.on{opacity:1}
+[hidden]{display:none!important}
+/* 스태프 집계 */
+table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+th,td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:right}
+th:first-child,td:first-child{text-align:left}
+.adminwrap{max-width:900px}
+.big{font-size:56px;font-weight:900;line-height:1}
+</style>
+</head>
+<body>
+
+<main class="wrap" id="form">
+  <div class="top"><span>성수유니온랩 · 썰랩</span><span class="live"><i></i>노동부 근로감독 중</span></div>
+  <h1>회사 이름만<br>알려주세요</h1>
+  <p class="lead">이름은 <b>성수유니온랩이 지키고</b> 회사 이름은 <b>감독관 책상에</b> 올립니다. 1분이면 끝나요.</p>
+
+  <section class="q">
+    <h2><span class="num">1</span>어느 회사예요?</h2>
+    <div class="grid2" id="qCompany"></div>
+    <div class="field" id="companyOther" hidden><input id="companyInput" maxlength="30" placeholder="회사 이름을 적어주세요"></div>
+  </section>
+
+  <section class="q">
+    <h2><span class="num">2</span>어디서 일해요?</h2>
+    <div class="grid2" id="qPlace"></div>
+  </section>
+
+  <section class="q">
+    <h2><span class="num">3</span>지난주 연장근로는 몇 시간이었어요?<small>하루 8시간 · 주 40시간을 넘겨 일한 시간을 다 더해보세요.</small></h2>
+    <div class="tip">9시 출근이면 매일 <b>저녁 8시 반 넘어</b> 퇴근한 주는 대부분 <b>12시간 초과</b>예요. 법이 정한 한도를 넘은 거예요.</div>
+    <div class="col" id="qOt"></div>
+  </section>
+
+  <section class="q">
+    <h2><span class="num">4</span>연장·야간수당은 받고 있어요?</h2>
+    <div class="grid2" id="qPay"></div>
+  </section>
+
+  <section class="q">
+    <h2><span class="num">5</span>회사에서 들어본 말이 있어요?<small>여러 개 골라도 돼요.</small></h2>
+    <div class="grid2" id="qSys"></div>
+  </section>
+
+  <section class="q">
+    <h2><span class="num">6</span>괴롭힘을 겪거나 본 적 있어요?</h2>
+    <div class="grid2" id="qBully"></div>
+  </section>
+
+  <section class="q">
+    <h2><span class="num">7</span>더 하고 싶은 말 <small>선택이에요. 이름 · 팀명 · 직급처럼 누군지 알 수 있는 내용은 빼주세요.</small></h2>
+    <div class="field"><textarea id="memo" maxlength="300" placeholder="예: 신상품 출시 주간마다 밤 11시 퇴근이 기본이에요"></textarea></div>
+    <div class="counter"><span id="memoLen">0</span> / 300</div>
+  </section>
+
+  <section class="q">
+    <label class="check"><input type="checkbox" id="shareOk"><span><b>내가 쓴 내용을 감독관에게 그대로 전달해도 돼요.</b> (선택) 체크하지 않으면 회사 이름과 위반 유형 숫자만 전달돼요.</span></label>
+  </section>
+
+  <div class="promise"><b>성수유니온랩의 약속</b>이름 · 연락처를 받지 않아요. 제보가 적은 회사는 숫자도 공개하지 않아요. 감독이 반드시 나간다고 약속할 수는 없지만 노동부에 감독 대상으로 요청합니다.</div>
+
+  <button class="btn red" id="submit" disabled>익명으로 제보하기</button>
+  <span class="hint" id="need" style="font-size:13px;color:var(--muted);text-align:center;margin-top:-12px">1~4번을 골라주세요</span>
+</main>
+
+<main class="wrap done" id="thanks" hidden>
+  <div class="top"><span>성수유니온랩 · 썰랩</span><span class="live"><i></i>노동부 근로감독 중</span></div>
+  <span class="stamp">접수 완료</span>
+  <h1>제보가 감독관<br>책상으로 갑니다</h1>
+  <div class="same" id="sameBox" hidden>같은 회사에서 벌써<br><b id="sameN">0</b>명이 제보했어요.<br>혼자가 아니에요!</div>
+  <p class="lead" id="sameSmall">같은 회사 제보가 모이면 더 힘이 세져요.</p>
+  <a class="btn" id="joinBtn" href="#" target="_blank" rel="noopener">같은 회사 소식 받기 (익명방)</a>
+  <button class="btn line" id="shareBtn" type="button">같은 팀 동료에게도 보내기</button>
+  <p class="lead" style="font-size:13px">익명방 성수동119로 연결돼요. 이름 안 물어봐요. 회사 이야기는 운영자와 1:1로 나눠요.</p>
+</main>
+
+<main class="wrap adminwrap" id="admin" hidden>
+  <div class="top"><span>스태프 집계</span><span id="aTime"></span></div>
+  <div><span class="big" id="aTotal">0</span> 건</div>
+  <h2 style="margin:0">회사별</h2>
+  <div style="overflow-x:auto"><table><thead><tr><th>회사</th><th>제보</th><th>12시간 초과</th><th>수당 일부·미지급</th><th>괴롭힘</th><th>원문 전달 동의</th></tr></thead><tbody id="aCompany"></tbody></table></div>
+  <h2 style="margin:0">입구별</h2>
+  <div style="overflow-x:auto"><table><thead><tr><th>입구</th><th>제보</th></tr></thead><tbody id="aSrc"></tbody></table></div>
+  <p class="lead" style="font-size:13px">제보 원문은 Firebase 콘솔 → Firestore → reports 에서만 볼 수 있어요.</p>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script type="module">
+const firebaseConfig = {
+  apiKey: "AIzaSyCSw1qJSbWrRqbnAxR6J8Ko6mtWHkmywbM",
+  authDomain: "seongsu-compass.firebaseapp.com",
+  projectId: "seongsu-compass",
+  storageBucket: "seongsu-compass.firebasestorage.app",
+  messagingSenderId: "405081326197",
+  appId: "1:405081326197:web:54e175f364ade80ff56e3c",
+  measurementId: "G-6RK4FNKLHW"
+};
+const OPENCHAT_URL = "https://open.kakao.com/o/gGgqYYPi";
+const CAMPAIGN = "sd2026";            // 성동구 감독 캠페인 구분값
+const SHOW_MIN = 3;                    // 같은 회사 숫자를 보여주는 최소 건수
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, collection, writeBatch, serverTimestamp, increment, getDoc, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const db = getFirestore(initializeApp(firebaseConfig));
+const $ = (id) => document.getElementById(id);
+const toast = (t) => { const el=$("toast"); el.textContent=t; el.classList.add("on"); clearTimeout(toast._t); toast._t=setTimeout(()=>el.classList.remove("on"),2400); };
+
+const COMPANIES = ["무신사","젠틀몬스터","쿠팡","SM엔터","크래프톤","패션잡화","이커머스","직접 입력"];
+const PLACES = ["본사·사무실","매장","물류·창고","그 밖에"];
+const OT = [["none","없어요"],["le12","12시간 이하"],["gt12","12시간 넘었어요"],["unknown","잘 모르겠어요"]];
+const PAY = [["full","제대로 받아요"],["part","일부만 받아요"],["none","못 받아요"],["unknown","잘 모르겠어요"]];
+const SYS = [["pogwal","포괄임금"],["jaeryang","재량근로"],["seontaek","선택적 근로"],["none","없음·모름"]];
+const BULLY = [["self","직접 겪었어요"],["saw","본 적 있어요"],["no","없어요"]];
+
+const a = { company:null, place:null, ot:null, pay:null, sys:new Set(), bully:null };
+
+function chips(box, list, key, { multi=false, warn=[] } = {}){
+  list.forEach(item => {
+    const [val,label] = Array.isArray(item) ? item : [item,item];
+    const b = document.createElement("button"); b.type="button"; b.className="opt"+(warn.includes(val)?" warn":""); b.textContent=label; b.setAttribute("aria-pressed","false");
+    b.onclick = () => {
+      if (multi) {
+        if (val === "none") { a.sys.clear(); [...box.children].forEach(c=>c.setAttribute("aria-pressed","false")); }
+        else { a.sys.delete("none"); [...box.children].forEach(c=>{ if (c.dataset.v==="none") c.setAttribute("aria-pressed","false"); }); }
+        const on = b.getAttribute("aria-pressed")!=="true"; b.setAttribute("aria-pressed", String(on));
+        on ? a.sys.add(val) : a.sys.delete(val);
+      } else {
+        [...box.children].forEach(c=>c.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); a[key]=val;
+        if (key==="company") { $("companyOther").hidden = val!=="직접 입력"; if (val==="직접 입력") $("companyInput").focus(); }
+      }
+      check();
+    };
+    b.dataset.v = val; box.appendChild(b);
+  });
+}
+chips($("qCompany"), COMPANIES, "company");
+chips($("qPlace"), PLACES, "place");
+chips($("qOt"), OT, "ot", { warn:["gt12"] });
+chips($("qPay"), PAY, "pay", { warn:["part","none"] });
+chips($("qSys"), SYS, "sys", { multi:true });
+chips($("qBully"), BULLY, "bully", { warn:["self","saw"] });
+
+$("memo").addEventListener("input", () => $("memoLen").textContent = $("memo").value.length);
+$("companyInput").addEventListener("input", check);
+
+function companyName(){
+  if (a.company === "직접 입력") return $("companyInput").value.trim().replace(/\s+/g," ").slice(0,30);
+  return a.company;
+}
+function check(){
+  const ok = companyName() && a.place && a.ot && a.pay;
+  $("submit").disabled = !ok; $("need").hidden = !!ok;
+  if (!check._started && (a.company||a.place)) { check._started = true; track("report_start"); }
+}
+const keyOf = (name) => name.toLowerCase().replace(/[^0-9a-z가-힣]/g,"").slice(0,30) || "etc";
+
+$("submit").onclick = async () => {
+  const name = companyName(); if (!name) return;
+  if (localStorage && (()=>{ try { return localStorage.getItem("ssulab_report_"+keyOf(name)); } catch(e){ return null; } })()) {
+    if (!confirm("이 기기에서 같은 회사로 이미 제보하셨어요. 그래도 한 번 더 보낼까요?")) return;
+  }
+  $("submit").disabled = true; $("submit").textContent = "보내는 중…";
+  const key = keyOf(name);
+  const r = {
+    campaign:CAMPAIGN, company:name, companyKey:key, place:a.place, ot:a.ot, pay:a.pay,
+    systems:[...a.sys], bully:a.bully || "skip", memo:$("memo").value.trim().slice(0,300),
+    shareOk:$("shareOk").checked, src:window.SRC, createdAt:serverTimestamp()
+  };
+  const c = {
+    campaign:CAMPAIGN, company:name, n:increment(1),
+    gt12:increment(r.ot==="gt12"?1:0), unpaid:increment(r.pay==="part"||r.pay==="none"?1:0),
+    bully:increment(r.bully==="self"||r.bully==="saw"?1:0), shareOk:increment(r.shareOk?1:0)
+  };
+  const s = { campaign:CAMPAIGN, n:increment(1) };
+  try {
+    const b = writeBatch(db);
+    b.set(doc(collection(db,"reports")), r);
+    b.set(doc(db,"report_counts",key), c, { merge:true });
+    b.set(doc(db,"report_src",window.SRC), s, { merge:true });
+    await b.commit();
+    try { localStorage.setItem("ssulab_report_"+key, "1"); } catch(e){}
+    track("report_submit", { company:key, ot:r.ot, pay:r.pay });
+    showThanks(key, name);
+  } catch(e) {
+    console.error(e); toast("전송이 안 됐어요. 잠시 뒤 다시 눌러주세요."); $("submit").disabled=false; $("submit").textContent="익명으로 제보하기";
+  }
+};
+
+async function showThanks(key, name){
+  $("form").hidden = true; $("thanks").hidden = false; scrollTo(0,0);
+  $("joinBtn").href = OPENCHAT_URL;
+  $("joinBtn").onclick = () => track("report_join");
+  try {
+    const snap = await getDoc(doc(db,"report_counts",key));
+    const n = snap.exists() ? snap.data().n : 1;
+    if (n >= SHOW_MIN && a.company !== "직접 입력") { $("sameN").textContent = n; $("sameBox").hidden = false; $("sameSmall").hidden = true; }
+  } catch(e){}
+  $("shareBtn").onclick = async () => {
+    track("report_share");
+    const text = "지금 노동부 근로감독 중이래. 회사 이름만 익명으로 알려주면 감독관한테 올려준대. 1분이면 돼 " + location.origin + "/report?src=share";
+    if (navigator.share) { try { await navigator.share({ text }); } catch(e){} }
+    else { try { await navigator.clipboard.writeText(text); toast("복사했어요. 카톡에 붙여넣어 보내주세요!"); } catch(e){} }
+  };
+}
+
+/* ---------- 스태프 집계: /report?view=admin ---------- */
+if (new URLSearchParams(location.search).get("view") === "admin") {
+  $("form").hidden = true; $("admin").hidden = false;
+  onSnapshot(query(collection(db,"report_counts"), where("campaign","==",CAMPAIGN)), (qs) => {
+    const rows = []; let total = 0;
+    qs.forEach(s => { const d = s.data(); rows.push(d); total += d.n||0; });
+    rows.sort((x,y)=>(y.n||0)-(x.n||0));
+    $("aTotal").textContent = total;
+    $("aCompany").innerHTML = "";
+    rows.forEach(d => { const tr=document.createElement("tr");
+      [d.company,d.n||0,d.gt12||0,d.unpaid||0,d.bully||0,d.shareOk||0].forEach((v,i)=>{ const td=document.createElement("td"); td.textContent=v; tr.appendChild(td); });
+      $("aCompany").appendChild(tr); });
+    $("aTime").textContent = new Date().toLocaleTimeString("ko-KR");
+  });
+  onSnapshot(query(collection(db,"report_src"), where("campaign","==",CAMPAIGN)), (qs) => {
+    $("aSrc").innerHTML = "";
+    const rows=[]; qs.forEach(s=>rows.push([s.id,s.data().n||0])); rows.sort((x,y)=>y[1]-x[1]);
+    rows.forEach(([k,n])=>{ const tr=document.createElement("tr"); [k,n].forEach(v=>{const td=document.createElement("td"); td.textContent=v; tr.appendChild(td);}); $("aSrc").appendChild(tr); });
+  });
+}
+</script>
+</body>
+</html>
